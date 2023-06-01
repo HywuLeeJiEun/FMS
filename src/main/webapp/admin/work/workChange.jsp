@@ -1,5 +1,5 @@
-<%@page import="rmsuser.rmsuser"%>
-<%@page import="rmsuser.RmsuserDAO"%>
+<%@page import="fmsuser.fmsuser"%>
+<%@page import="fmsuser.FmsuserDAO"%>
 <%@page import="java.io.PrintWriter"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
@@ -20,14 +20,14 @@
 <link rel="stylesheet" href="../../css/css/bootstrap.css">
 <link rel="stylesheet" href="../../css/index.css">
 
-<title>RMS</title>
+<title>FMS</title>
 </head>
 
 
 
 <body>
 <%
-		RmsuserDAO userDAO = new RmsuserDAO(); //사용자 정보
+		FmsuserDAO userDAO = new FmsuserDAO(); //사용자 정보
 
 		// 메인 페이지로 이동했을 때 세션에 값이 담겨있는지 체크
 		String id = null;
@@ -71,7 +71,7 @@
 		}
 		
 		// 사용자 정보 담기
-		ArrayList<rmsuser> ulist = userDAO.getUser(id);
+		ArrayList<fmsuser> ulist = userDAO.getUser(id);
 		String password = ulist.get(0).getUser_pwd();
 		String name = ulist.get(0).getUser_name();
 		String rank = ulist.get(0).getUser_rk();

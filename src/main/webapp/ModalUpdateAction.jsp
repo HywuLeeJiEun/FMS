@@ -1,4 +1,4 @@
-<%@page import="rmsuser.RmsuserDAO"%>
+<%@page import="fmsuser.FmsuserDAO"%>
 <%@page import="org.apache.catalina.UserDatabase"%>
 <%@page import="java.io.PrintWriter"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>RMS</title>
+<title>FMS</title>
 </head>
 <body>
 	<%
@@ -36,7 +36,7 @@
 		
 		
 		// ************** 변경 ***************
-		RmsuserDAO userDAO = new RmsuserDAO(); //사용자 정보
+		FmsuserDAO userDAO = new FmsuserDAO(); //사용자 정보
 		
 		int num = userDAO.UpdateUser(upwd, uname, uemail, id); 
 		

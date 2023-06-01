@@ -1,4 +1,5 @@
-<%@page import="rmsuser.RmsuserDAO"%>
+
+<%@page import="fmsuser.FmsuserDAO"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.io.PrintWriter"%>
@@ -9,11 +10,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>RMS</title>
+<title>FMS</title>
 </head>
 <body>
 	<%
-		RmsuserDAO userDAO = new RmsuserDAO(); //사용자 정보
+		FmsuserDAO userDAO = new FmsuserDAO(); //사용자 정보
 		
 		// 현재 세션 상태를 체크한다
 		String id = null;

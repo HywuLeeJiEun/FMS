@@ -1,5 +1,5 @@
-<%@page import="rmsuser.rmsuser"%>
-<%@page import="rmsuser.RmsuserDAO"%>
+
+<%@page import="fmsuser.FmsuserDAO"%>
 <%@page import="java.io.PrintWriter"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>RMS</title>
+<title>FMS</title>
 </head>
 <body>
 	<%
@@ -23,13 +23,13 @@
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert('현재 로그인 중입니다.')");
-			script.println("location.href='/RMS/user/bbs.jsp'");
+			script.println("location.href='/FMS/user/fbbs.jsp'");
 			script.println("</script>");
 		}
 	
 		
 		// ************** 로그인을 담당하는 JSP 페이지 ***************
-		RmsuserDAO userDAO = new RmsuserDAO(); //인스턴스 userDAO 생성
+		FmsuserDAO userDAO = new FmsuserDAO(); //인스턴스 userDAO 생성
 		
 		String user_id = request.getParameter("id");
 		String user_pwd = request.getParameter("password");
@@ -48,7 +48,7 @@
 			//session.setMaxInactiveInterval(60 * 60);  //1순위
 			//session 순위 - https://dejavuhyo.github.io/posts/session-timeout-setting-and-application-priority/
 			script.println("<script>");
-			script.println("location.href='/RMS/user/bbs.jsp'");
+			script.println("location.href='/FMS/user/fbbs.jsp'");
 			script.println("</script>");
 		}else if(result == 0){
 			script.println("<script>");
