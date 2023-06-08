@@ -14,7 +14,6 @@
 <%@page import="fmsuser.FmsuserDAO"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalDate"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.util.List"%>
 <%@page import="org.apache.tomcat.util.buf.StringUtils"%>
@@ -341,6 +340,8 @@
 									} else if (flist.get(0).getFms_sig().equals("제출")) {
 							%>
 							<a type="button" href="/FMS/user/action/fmsSignAction.jsp?fmsr_cd=<%= flist.get(0).getFmsr_cd() %>&fms_sig=저장" onClick="return confirm('저장 상태로 되돌립니다. 수정 및 삭제가 가능해지며, 관리자의 승인 이후에는 변경이 불가합니다.')" style="margin-bottom:50px; margin-left:20px" class="btn btn-danger pull-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="제출을 취소하여 수정/삭제가 가능하도록 합니다.">변경</a>		
+							
+							<a type="button" href="/FMS/user/action/csvPrintAction.jsp?fmsr_cd=<%= flist.get(0).getFmsr_cd() %>" style="margin-bottom:50px; margin-left:20px" class="btn btn-success pull-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title=".csv 파일로 출력합니다.">출력</a>	
 							<%
 									}
 								}

@@ -103,9 +103,6 @@
 
 	<!-- nav바 불러오기 -->
     <jsp:include page="../Nav.jsp"></jsp:include>
-	<textarea><%= category %></textarea>
-	<textarea><%= strRe %></textarea>
-	<br><textarea><%= list.size() %></textarea>
 	<!-- ***********검색바 추가 ************* -->
 	<div class="container">
 		<div class="row">

@@ -46,11 +46,19 @@
 			
 			if(result != -1) {
 				//입력 성공!
-				PrintWriter script = response.getWriter();
-				script.println("<script>");
-				script.println("alert('제출이 완료되었습니다. 이후 관리자 확인 후 승인 됩니다.')");
-				script.println("location.href='../fmsUpdate.jsp?fmsr_cd="+fmsr_cd+"'");
-				script.println("</script>");
+				if(fms_sig.contains("제출")) {
+					PrintWriter script = response.getWriter();
+					script.println("<script>");
+					script.println("alert('제출이 완료되었습니다. 이후 관리자 확인 후 승인 됩니다.')");
+					script.println("location.href='../fmsUpdate.jsp?fmsr_cd="+fmsr_cd+"'");
+					script.println("</script>");
+				} else {
+					PrintWriter script = response.getWriter();
+					script.println("<script>");
+					script.println("alert('저장 상태로 변경 되었습니다. 수정 및 삭제가 가능합니다.')");
+					script.println("location.href='../fmsUpdate.jsp?fmsr_cd="+fmsr_cd+"'");
+					script.println("</script>");
+				}
 			} else {
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
