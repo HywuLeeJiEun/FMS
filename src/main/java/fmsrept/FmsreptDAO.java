@@ -470,4 +470,34 @@ public class FmsreptDAO {
 		}
 		return list;
 	}
+	
+	
+	//FMSREPT - fmsrept table excel 출력하기
+	public int PrintExcel(String fmsr_cd, String csvName) {
+		String sql = "select '시스템','인지일시','발생일시', '종료일시', '장애소요시간(분)','장애내용','장애원인','장애등급','장애조치','후속조치' union "
+				+ "select t.task_wk, r.fms_rec, r.fms_str, r.fms_end, r.fms_fov, r.fms_con, fms_cau, fms_sev, fms_emr, fms_dfu "
+				+ "from fmsrept r "
+				+ "left join fmstask t "
+				+ "on r.fms_sys = t.task_num "
+				+ "where r.fmsr_cd = ? "
+				+ "INTO OUTFILE '"+csvName+"' "
+				+ "character set euckr "
+				+ "fields terminated by ',' "
+				+ "enclosed by '\"' "
+				+ "escaped by '\\\\' "
+				+ "lines terminated by '\\n'";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, fmsr_cd);
+			pstmt.execute();
+			return 1;
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(fmsr_cd);
+			System.out.println(csvName);
+			System.out.println(sql);
+			e.printStackTrace();
+		}
+		return -1;
+	}
 }

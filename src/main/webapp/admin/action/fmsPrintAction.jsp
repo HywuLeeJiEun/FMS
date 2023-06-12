@@ -91,7 +91,7 @@
 	
 
 	// 원본 파일 로드
-	String docx = "D:\\workspace\\FMS\\src\\main\\webapp\\WEB-INF\\fault_reports\\FMSFile\\SOIL_Application.docx";
+	String docx = "C:\\Users\\S-OIL\\git\\FMS\\src\\main\\webapp\\WEB-INF\\fault_reports\\FMSFile\\SOIL_Application.docx";
 	
 	FileInputStream file = new FileInputStream(docx);
 	
@@ -572,7 +572,7 @@
 	
 	// 수정된 내용을 .docx 파일에 저장
 	String a = "S-OIL-Application-장애보고서_"+ fms_sys +"_" + fmsr_cd.substring(0,8) + ".docx"; 
-	String fileName = "D:\\workspace\\FMS\\src\\main\\webapp\\WEB-INF\\fault_reports\\FMSFile\\"+a;
+	String fileName = "C:\\Users\\S-OIL\\git\\FMS\\src\\main\\webapp\\WEB-INF\\fault_reports\\FMSFile\\"+a;
 	
 	FileOutputStream output = new FileOutputStream(new File(fileName));
 	

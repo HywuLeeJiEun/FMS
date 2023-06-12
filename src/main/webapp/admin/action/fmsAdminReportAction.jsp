@@ -80,7 +80,7 @@
 	
 	
 	//원본 파일 로드
-	String excel = "D:\\workspace\\FMS\\src\\main\\webapp\\WEB-INF\\fault_reports\\FMSFile\\장애리포트_year.xlsx";
+	String excel = "C:\\Users\\S-OIL\\git\\FMS\\src\\main\\webapp\\WEB-INF\\fault_reports\\FMSFile\\장애리포트_year.xlsx";
 	
 	FileInputStream file = new FileInputStream(excel);
 	
@@ -208,7 +208,7 @@
 	}   
 	
 	// 수정된 내용을 .docx 파일에 저장
-	String fileName = "D:\\workspace\\FMS\\src\\main\\webapp\\WEB-INF\\fault_reports\\FMSFile\\장애리포트_"+year+".xlsx";
+	String fileName = "C:\\Users\\S-OIL\\git\\FMS\\src\\main\\webapp\\WEB-INF\\fault_reports\\FMSFile\\장애리포트_"+year+".xlsx";
 	
 	FileOutputStream output = new FileOutputStream(new File(fileName));
 	

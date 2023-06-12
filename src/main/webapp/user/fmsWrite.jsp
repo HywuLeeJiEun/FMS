@@ -8,7 +8,6 @@
 <%@page import="fmsuser.FmsuserDAO"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalDate"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.util.List"%>
 <%@page import="org.apache.tomcat.util.buf.StringUtils"%>
@@ -157,7 +156,7 @@
 								<th style="text-align: center; border: 1px solid #dddddd;  color:#3104B4;">장애 인지 일자</th>
 								<th style="text-align:center"><input id="fms_rec" type="datetime-local" name="fms_rec" required></th>
 								<th style="text-align: center; border: 1px solid #dddddd;">장애시간 / 복구 목표시간</th>
-								<th style="text-align:center"><input id="fms_fov" name="fms_fov" style="width:35%; text-align:right; border:none;" readonly data-toggle="tooltip" data-html="true" data-placement="bottom" title="장애 발생 일자, 조치 완료 일자 선택 시 자동으로 계산됩니다." placeholder="장애복구시간"></input>/190분</th>
+								<th style="text-align:center"><input id="fms_fov" name="fms_fov" style="width:35%; text-align:right; border:none;" readonly data-toggle="tooltip" data-html="true" data-placement="bottom" title="장애 인지 일자, 조치 완료 일자 선택 시 자동으로 계산됩니다." placeholder="장애복구시간"></input>/190분</th>
 							</tr>
 							<tr class="ui-state-default ui-state-disabled">
 								<th style="text-align: center; border: 1px solid #dddddd;  color:#3104B4;" onClick="dataSEV()">심각도(등급)</th>
@@ -283,18 +282,26 @@
 	 <script>
 	 // 장애발생 일자(str), 조치완료 일자(end)의 값을 확인하여 '장애시간(fov)'을 도출한다.
       $( document ).ready( function() {
-        $( '#fms_str, #fms_end' ).change( function() {
-          var a = new Date($( '#fms_str' ).val());
+        $( '#fms_str, #fms_rec, #fms_end' ).change( function() {
+          var t = new Date($( '#fms_str' ).val());
+          var a = new Date($( '#fms_rec' ).val());
           var b = new Date($( '#fms_end' ).val());
           var c = (b-a) / 60000; //분으로 표시
+          var c2 = (b-t) / 60000; //분으로 표시
+          
+          if(c2 <= 0) { 
+        	  alert("장애 발생 일자가 조치 완료 일자에 대한 설정이 올바르지 않습니다.\n조치 완료 일자보다 이전인 날짜로 설정해 주십시오."); 
+        	  $( '#fms_str' ).val("");
+          }
+
           if(a != "Invalid Date" && b != "Invalid Date") {
-	          if(c >= 0) { //양수인 경우, 즉, 완료일이 발생일자보다 적지 않은경우!
+	          if(c > 0) { //양수인 경우, 즉, 완료일이 발생일자보다 적지 않은경우!
 	          	$( '#fms_fov' ).attr('value', c);
 	          	$('#fms_endc').attr('value', b.getFullYear() + "-" + (b.getMonth() + 1) + "-" + b.getDate());
 	          } else {
 	        	  //장애발생 일자 및 조치완료 일자가 잘못된 경우,
-	        	  $( '#fms_str' ).val("");
-	        	  alert("장애발생 일자가 조치 완료 일자에 대한 설정이 올바르지 않습니다.\n조치 완료 일자보다 이전인 날짜로 설정해 주십시오."); 
+	        	  $( '#fms_rec' ).val("");
+	        	  alert("장애 인지 일자가 조치 완료 일자에 대한 설정이 올바르지 않습니다.\n조치 완료 일자보다 이전인 날짜로 설정해 주십시오."); 
 	          }
           }
          });

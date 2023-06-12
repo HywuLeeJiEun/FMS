@@ -81,7 +81,7 @@
 				//입력 성공!
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
-				script.println("alert('수정이 완료되었습니다.')");
+				script.println("alert('완료되었습니다.')");
 				if(fms_sig.equals("승인")) {
 					// admin의 경우 이어지는 경로 '승인'
 					script.println("location.href='/FMS/admin/fmsUpdateAdmin.jsp?fmsr_cd="+fmsr_cd+"&user_id="+user_id+"'");
