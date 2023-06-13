@@ -183,7 +183,7 @@ public class FmsreptDAO {
 
 				}
 			}
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			
 			if(SQL.contains("between") || str_day.contains("1900-01-01") || str_day.equals(end_day)) {
 				SQL += " ("+dayField+" LIKE '"+end_day.trim()+"%')"; //end_day까지 포함하기
@@ -191,7 +191,7 @@ public class FmsreptDAO {
 				SQL += "("+dayField+" between '"+str_day.trim()+"' and '"+end_day.trim()+"') "; //" (fms_rec <= '"+end_day.trim()+"') ";
 			}
 			SQL += " order by "+dayField+" desc limit ?,10";
-			System.out.println(SQL);
+			//System.out.println(SQL);
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
 			pstmt.setString(1, fms_sig);
 			pstmt.setInt(2, (pageNumber-1) * 10);
@@ -506,11 +506,28 @@ public class FmsreptDAO {
 			return 1;
 		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println(fmsr_cd);
-			System.out.println(csvName);
-			System.out.println(sql);
+			//System.out.println(fmsr_cd);
+			//System.out.println(csvName);
+			//System.out.println(sql);
 			e.printStackTrace();
 		}
 		return -1;
+	}
+	
+	//FMSREPT - fmsrept의 fms_sys를 distinct로 중복을 제거하여 목록 출력 // fbbsAdminSla.jsp, ...
+	public ArrayList<String> getDistSys() {
+		ArrayList<String> list = new ArrayList<String>();
+		String SQL = "select distinct(fms_sys) from fmsrept"; 
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			rs = pstmt.executeQuery(); //select
+			while(rs.next()) {
+				list.add(rs.getString(1));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return list;
 	}
 }

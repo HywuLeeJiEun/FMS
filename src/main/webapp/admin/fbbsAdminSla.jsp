@@ -132,8 +132,24 @@
 								<option value="user_id">작성자</option>
 							</select>
 						</td>
-						<td><input type="text" class="form-control" style="margin-right:10px"
-							placeholder="검색어 입력" name="searchText" maxlength="100"></td>
+						<td><input type="hidden" class="form-control" style="margin-right:10px"
+							placeholder="검색어 입력" name="searchText" id="searchText" maxlength="100" value="Y">
+							<select class="form-control" name="searchSys" id="searchSys" style="margin-right:10px; display:none;" onchange="ChangeSys()">
+								<!-- 시스템 목록 출력 -->
+								<%
+									ArrayList<String> syslist = fms.getDistSys();
+								
+									for(int i=0; i < syslist.size(); i++) {
+								%>
+									<option><%= syslist.get(i) %></option>
+								<% } %>
+							</select>
+							<select class="form-control" name="searchSla" id="searchSla" style="margin-right:10px; display:block;" onchange="ChangeSla()">
+								<!--  SLA 여부 -->
+								<option>Y</option>
+								<option>N</option>
+							</select>
+						</td>
 						<td><button type="submit" style="margin:5px" class="btn btn-success" style="margin-left:10px">검색</button></td>
 					</tr>
 				</table>
@@ -228,10 +244,46 @@
 		function ChangeValue() {
 			var value_str = document.getElementById('searchField');
 			
+			if(value_str.value == "fms_sys") {
+				$("#searchText").attr('type','hidden'); //텍스트 필드가 보이지 않도록 수정합니다.
+				$("#searchSla").css('display', 'none'); 
+				$("#searchSys").css('display', 'block'); //선택 상자 출력
+				
+				// 값 변경
+				$("#searchText").attr('value',$("#searchSys").val());
+	
+				
+			} else if(value_str.value == "fms_sla") { 
+				$("#searchText").attr('type','hidden'); //텍스트 필드가 보이지 않도록 수정합니다.
+				$("#searchSys").css('display', 'none'); 
+				$("#searchSla").css('display', 'block'); //선택 상자 출력
+				
+				// 값 변경
+				$("#searchText").attr('value',$("#searchSla").val());	
+			}else {
+				$("#searchText").attr('type','text'); 
+				$("#searchSla").css('display', 'none'); 
+				$("#searchSys").css('display', 'none');
+				
+				// 값 변경
+				$("#searchText").attr('value', "");
+			}
+			
 		}
 		function ChangeValueOfDay() {
 			var value_str = document.getElementById('dayField');
-			
+		}
+		
+		function ChangeSys() {
+			var value_str = document.getElementById('searchSys');
+			// 값 변경
+			$("#searchText").attr('value',value_str.value);
+		}
+		
+		function ChangeSla() {
+			var value_str = document.getElementById('searchSla');
+			// 값 변경
+			$("#searchText").attr('value',value_str.value);
 		}
 	</script>
 	

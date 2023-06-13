@@ -40,23 +40,37 @@
 		} else { 
 			String fmsr_cd = request.getParameter("fmsr_cd");
 			String user_id = id; //사용자 아이디
+			// 관리자의 권한으로 들어온 경우, 관리자 페이지로 빠지도록 함.
+			String admin = request.getParameter("user_id");
+			if(admin != null && !admin.equals("")) {
+				user_id = admin;
+			}
 			String fms_sig = request.getParameter("fms_sig"); // sign    저장 -> 제출 (수정 삭제가 불가하고 관리자가 승인 가능한 상태로 변경)
 
 			int result = fms.updateSignFms(fmsr_cd, user_id, fms_sig);
 			
+			
+			
 			if(result != -1) {
 				//입력 성공!
-				if(fms_sig.contains("제출")) {
+				if(fms_sig.contains("제출") && admin == null) {
 					PrintWriter script = response.getWriter();
 					script.println("<script>");
 					script.println("alert('제출이 완료되었습니다. 이후 관리자 확인 후 승인 됩니다.')");
 					script.println("location.href='../fmsUpdate.jsp?fmsr_cd="+fmsr_cd+"'");
 					script.println("</script>");
-				} else {
+				} else if(admin == null){
 					PrintWriter script = response.getWriter();
 					script.println("<script>");
 					script.println("alert('저장 상태로 변경 되었습니다. 수정 및 삭제가 가능합니다.')");
 					script.println("location.href='../fmsUpdate.jsp?fmsr_cd="+fmsr_cd+"'");
+					script.println("</script>");
+				} else {
+					// admin인 경우,
+					PrintWriter script = response.getWriter();
+					script.println("<script>");
+					script.println("alert('승인 상태가 취소 되었습니다.')");
+					script.println("location.href='/FMS/admin/fmsUpdateAdmin.jsp?fmsr_cd="+fmsr_cd+"&&user_id="+admin+"'");
 					script.println("</script>");
 				}
 			} else {

@@ -193,7 +193,7 @@
 							</tr>
 							<tr class="ui-state-default ui-state-disabled">
 								<th style="text-align: center; border: 1px solid #dddddd;" onClick="dataSEV()">심각도(등급)</th>
-								<th style="text-align:center" onClick="dataSEV()"><input id="fms_sev" name="fms_sev" style="width:10%; border:none" readonly data-toggle="tooltip" data-html="true" data-placement="bottom" title="A / B / C 등급 선택으로 산정됩니다." value="<%= flist.get(0).getFms_sev() %>"></input>등급</th>
+								<th style="text-align:center" onClick="dataSEV()"><input name="fms_sev" style="width:10px; border:none; text-align:left" readonly value="<%= flist.get(0).getFms_sev()%>"></input>등급<button style="margin-left:5px" id="sev" type="button">확인</button><input type="hidden" name="fms_sco" value="<%= flist.get(0).getFms_sco() %>"></th>
 								<th style="text-align: center; color:#3104B4; border: 1px solid #dddddd;">장애 인지 경로</th>
 								<th style="text-align:center"><textarea id="fms_rte" name="fms_rte"  class="textarea"  class="textarea" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_rte() %></textarea></th>
 							</tr>
@@ -214,7 +214,7 @@
 								<th style="text-align:center"><%= userDAO.getName(user_id) %> <%= userDAO.getRank(user_id) %></th>
 								<th style="text-align: center; color:#3104B4; border: 1px solid #dddddd;">장애 시스템</th>
 								<th style="text-align:center; display:none"><textarea id="fms_sys" name="fms_sys" required><%= flist.get(0).getFms_sys() %></textarea></th>
-								<th style="text-align:center"><textarea  class="textarea"  class="textarea" style="width:100%; border:none; resize:none" required><%= userDAO.getManager(flist.get(0).getFms_sys()) %></textarea></th>
+								<th style="text-align:center"><textarea  class="textarea"  class="textarea" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_sys() %></textarea></th>
 							</tr>
 							<tr class="ui-state-default ui-state-disabled">
 								<th style="text-align: center; color:#3104B4; border: 1px solid #dddddd;">장애 책임</th>

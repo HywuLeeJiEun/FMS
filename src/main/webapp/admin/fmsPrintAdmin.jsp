@@ -163,8 +163,11 @@
 		 end = dateTime2.format(outputFormat);
 		 rec = dateTime3.format(outputFormat);
 	%>
-	<!-- fmsModal 불러오기 (심각도(등급)을 구하기 위함) -->
-	<jsp:include page="../fmsModal.jsp"></jsp:include>
+	<!-- fmsAdminModal 불러오기 (심각도(등급) 선택 사항 확인을 위함.) -->
+	<jsp:include page="../fmsAdminModal.jsp">
+		<jsp:param value="<%= fmsr_cd %>" name="fmsr_cd"/>
+		<jsp:param value="<%= flist.get(0).getFms_sco() %>" name="fms_sco"/>
+	</jsp:include>
 	
 	<!-- nav바 불러오기 -->
     <jsp:include page="../Nav.jsp"></jsp:include>
@@ -219,8 +222,8 @@
 								<th style="text-align:left"><input name="fms_fov" style="width:30%; border:none; text-align:left" readonly value="<%= flist.get(0).getFms_fov() + "/190분" %>"></input></th>
 							</tr>
 							<tr class="ui-state-default ui-state-disabled">
-								<th style="text-align: center; border: 1px solid #dddddd;">심각도(등급)</th>
-								<th style="text-align:left"><input name="fms_sev" style="border:none; text-align:left" readonly value="<%= flist.get(0).getFms_sev() + "등급"%>"></input></th>
+								<th style="text-align: center; border: 1px solid #dddddd;" onClick="dataSEV()">심각도(등급)</th>
+								<th style="text-align:left" onClick="dataSEV()"><input name="fms_sev" style="width:45px; border:none; text-align:left" readonly value="<%= flist.get(0).getFms_sev() + "등급"%>"></input><button id="sev" type="button">확인</button></th>
 								<th style="text-align: center; border: 1px solid #dddddd;">장애 인지 경로</th>
 								<th style="text-align:center"><textarea name="fms_rte" class="textarea"  class="textarea" style="width:100%; border:none; resize:none" readonly><%= flist.get(0).getFms_rte() %></textarea></th>
 							</tr>
@@ -235,7 +238,7 @@
 								<th style="text-align: center; border: 1px solid #dddddd;">장애 처리자</th>
 								<th style="text-align:left"><%= userDAO.getName(user_id) %> <%= userDAO.getRank(user_id) %></th>
 								<th style="text-align: center; border: 1px solid #dddddd;">장애 시스템</th>
-								<th style="text-align:center"><textarea name="fms_sys" class="textarea" style="width:100%; border:none; resize:none" required readonly><%= userDAO.getManager(flist.get(0).getFms_sys()) %></textarea></th>
+								<th style="text-align:center"><textarea name="fms_sys" class="textarea" style="width:100%; border:none; resize:none" required readonly><%= flist.get(0).getFms_sys() %></textarea></th>
 							</tr>
 							<tr class="ui-state-default ui-state-disabled">
 								<th style="text-align: center; border: 1px solid #dddddd;">장애 책임</th>
@@ -315,6 +318,7 @@
 								}
 
 							%>
+							<a type="button" href="/FMS/user/action/fmsSignAction.jsp?fmsr_cd=<%= flist.get(0).getFmsr_cd() %>&fms_sig=제출&admin=y&user_id=<%= flist.get(0).getUser_id() %>" onClick="return confirm('제출 상태로 되돌립니다. 장애보고 > 조회 및 승인에서 확인이 가능합니다. 변경하시겠습니까?')" style="margin-bottom:50px; margin-left:20px" class="btn btn-danger pull-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="승인을 취소하여 해당 보고를 수정합니다.">변경</a>		
 						</div>
 					</form>
 				</div>	
