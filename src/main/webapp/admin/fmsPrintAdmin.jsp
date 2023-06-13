@@ -15,7 +15,6 @@
 <%@page import="fmsuser.FmsuserDAO"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalDate"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.util.List"%>
 <%@page import="org.apache.tomcat.util.buf.StringUtils"%>

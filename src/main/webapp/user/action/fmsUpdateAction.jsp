@@ -1,9 +1,7 @@
 <%@page import="fmscar.FmscarDAO"%>
 <%@page import="java.sql.Timestamp"%>
-<%@page import="org.apache.xmlbeans.impl.repackage.Repackage"%>
 <%@page import="fmsrept.FmsreptDAO"%>
 <%@page import="fmsuser.FmsuserDAO"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.Arrays"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
