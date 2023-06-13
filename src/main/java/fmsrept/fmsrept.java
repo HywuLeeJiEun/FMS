@@ -12,6 +12,7 @@ public class fmsrept {
 	private String fms_acd;    //해당 장애 보고에 대한 A 구분코드
 	private String fms_bcd;    //해당 장애 보고에 대한 B 구분코드
 	private String fms_ccd;    //해당 장애 보고에 대한 C 구분코드
+	private int fms_sco; 	   //가중치 A * B * C 값
 	private int fms_sev; 	   //가중치 A * B * C 값의 등급 표시
 	private String fms_rte;    //장애 인지 경로
 	private String fms_dif;    //장애 분야
@@ -94,6 +95,12 @@ public class fmsrept {
 	}
 	public void setFms_ccd(String fms_ccd) {
 		this.fms_ccd = fms_ccd;
+	}
+	public int getFms_sco() {
+		return fms_sco;
+	}
+	public void setFms_sco(int fms_sco) {
+		this.fms_sco = fms_sco;
 	}
 	public int getFms_sev() {
 		return fms_sev;

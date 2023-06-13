@@ -164,6 +164,7 @@
 	var bw = 0;
 	var cw = 0;
 	var rank = "-";
+	var wv = 0;
 	
 	
 	var ranges = document.querySelectorAll('.box');
@@ -242,7 +243,7 @@
 			 const fd = document.getElementById('FmsDesc');
 			 fd.style.display = 'none';
 					 
-			 var wv = aw * bw * cw;
+			 wv = aw * bw * cw;
 
 			 if(wv <= 25) {
 				 rank = "4";
@@ -255,6 +256,7 @@
 				 rank = "1";
 			 }
 			 $("#fms_sev").val(rank);
+			 $('#fms_sco').val(wv);
 			 $("#wth").val('W는 '+aw+' * '+bw+' * '+cw+' = '+wv+'(점)으로 '+rank+'(등급)입니다.');		
 			
 		} 
@@ -264,6 +266,7 @@
 		if(confirm("산정된 등급으로 심각도(등급)가 표시됩니다.")) {
 			//등급 기록
 			$('#fms_sev').val(rank);
+			$('#fms_sco').val(wv);
 			$('#sev').text("재설정");
 			//모달 창 끄기
 			$("#FmsModal").modal('hide');
@@ -273,7 +276,7 @@
 	function reUpdate() {
 		if(confirm("재설정 시, 계산된 등급이 초기화됩니다. 다시 설정하시겠습니까?")) {
 			$('#fms_sev').val("-");
-			
+			 $('#fms_sco').val("0");
 			 const atable = document.getElementById('ATable');
 			 atable.style.display = '';
 			 const btable = document.getElementById('WTable');

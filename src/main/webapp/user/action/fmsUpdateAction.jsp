@@ -49,6 +49,7 @@
 			String fms_acd = request.getParameter("fms_acd"); //장애 보고 A 구분코드
 			String fms_bcd = request.getParameter("fms_bcd"); //장애 보고 B 구분코드
 			String fms_ccd = request.getParameter("fms_ccd"); //장애 보고 C 구분코드
+			int fms_sco = Integer.parseInt(request.getParameter("fms_sco")); // 심각도 등급 산정을 위한 값
 			int fms_sev = Integer.parseInt(request.getParameter("fms_sev")); //구분 등급 표시 (심각도(등급))
 			String fms_rte = request.getParameter("fms_rte"); //장애 인지 경로
 			String fms_dif = request.getParameter("fms_dif"); //장애 분야
@@ -72,7 +73,7 @@
 			java.sql.Timestamp fms_upa = fms.getDateNow(); //작성일 / 수정일 
 			
 			//에러없이 진행됨!
-			int result = fms.updateFms(fmsr_cd, user_id, fms_con, fms_str, fms_end, fms_rec, fms_fov , fms_acd, fms_bcd, fms_ccd, fms_sev, fms_rte, fms_dif, fms_dcd, fms_sys, fms_dre, fms_drp, fms_sym, fms_emr, fms_dfu, fms_eff, fms_cau, fms_res,  fms_sla, sla_rea, fms_sig, fms_upa);
+			int result = fms.updateFms(fmsr_cd, user_id, fms_con, fms_str, fms_end, fms_rec, fms_fov , fms_acd, fms_bcd, fms_ccd, fms_sco, fms_sev, fms_rte, fms_dif, fms_dcd, fms_sys, fms_dre, fms_drp, fms_sym, fms_emr, fms_dfu, fms_eff, fms_cau, fms_res,  fms_sla, sla_rea, fms_sig, fms_upa);
 		
 			String route = "";
 			

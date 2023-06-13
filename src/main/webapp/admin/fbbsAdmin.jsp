@@ -110,15 +110,16 @@
 	<!-- 게시판 메인 페이지 영역 시작 -->
 	<div class="container">
 		<div class="row">
-			<table id="bbsTable" class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
+			<table id="FmsTable" class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 				<thead>
 					<tr>
 						<!-- <th style="background-color: #eeeeee; text-align: center;">번호</th> -->
-						<th style="background-color: #eeeeee; text-align: center;">시스템</th>
-						<th style=" width:50%; background-color: #eeeeee; text-align: center;">장애 내용</th>
-						<th style="background-color: #eeeeee; text-align: center;">작성자</th>
-						<th style="background-color: #eeeeee; text-align: center;">심각도</th>
-						<th style="background-color: #eeeeee; text-align: center;">장애 인지 일자</th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(0)">&nbsp;&nbsp;시스템<input id="0" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style=" width:50%; background-color: #eeeeee; text-align: center; cursor:pointer" onclick="sortTable(1)">&nbsp;&nbsp;장애 내용<input id="1" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(2)">&nbsp;&nbsp;작성자<input id="2" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(3)">&nbsp;&nbsp;심각도<input id="3" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(4)">&nbsp;&nbsp;점수<input id="4" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(5)">&nbsp;&nbsp;장애 인지 일자<input id="5" style="border:none; width:18px; background-color:transparent;" value="▽"></input> </th>
 					</tr>
 				</thead>
 				<%
@@ -139,8 +140,10 @@
 						<!-- (3) 작성자 -->	
 						<td><%= userDAO.getName(list.get(i).getUser_id()) %></td>
 						<!--  (4) 심각도 -->
-						<td><%= list.get(i).getFms_sev() %> 등급</td>
-						<!-- (1) 장애 인지 일자-->
+						<td><%= list.get(i).getFms_sev() %>등급</td>
+						<!--  (5) 심각도 -->
+						<td><%= list.get(i).getFms_sco() %>점</td>
+						<!-- (6) 장애 인지 일자-->
 						<td><%= list.get(i).getFms_rec() %></td>
 					</tr>
 					<%
@@ -196,5 +199,70 @@
 	}
 	</script>
 	
+	
+	<script>
+	// Table sort 정렬
+	function sortTable(n) {
+		var table, rows, switching, o, x, y, shouldSwitch, dir, switchcount = 0;
+		table = document.getElementById("FmsTable");
+		switching = true;
+		dir = "asc"; //오름차순
+		
+		// 으름차순 / 내림차순 표시
+		if($("#"+n).val() == "△") {
+			$("#"+n).val("▽");
+			for(var i=0; i < 6; i ++) {
+				if(i != n) {
+					$("#"+i).val("");
+				}
+			}
+		} else {
+			$("#"+n).val("△");
+			for(var i=0; i < 6; i ++) {
+				if(i != n) {
+					$("#"+i).val("");
+				}
+			}
+		}
+		
+		
+		while (switching) {
+			switching = false;
+			rows = table.getElementsByTagName("tr");
+			
+			for(o=1; o < (rows.length -1); o++) {
+				shouldSwitch = false;
+				x = rows[o].getElementsByTagName("td")[n];
+				y = rows[o + 1].getElementsByTagName("td")[n];
+				
+				if(dir == "asc") {
+					if(x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+						shouldSwitch=true;
+						break;
+					}
+				} else if(dir == "desc") {
+					if(x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+						shouldSwitch = true;
+						break;
+					}
+				}
+			}
+			
+			if(shouldSwitch) {
+				rows[o].parentNode.insertBefore(rows[o + 1], rows[o]);
+				switching = true;
+				switchcount ++;
+			} else {
+				if(switchcount == 0 && dir == "asc") {
+					dir = "desc";
+					switching = true;
+				}
+			}
+
+		}
+		
+	}
+	
+	</script>
 </body>
 </html>

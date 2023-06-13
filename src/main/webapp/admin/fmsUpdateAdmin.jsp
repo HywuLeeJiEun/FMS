@@ -98,12 +98,6 @@
 		//사용자의 AU(Authority) 권한 가져오기 (일반/PL/관리자)
 		String au = ulist.get(0).getUser_au();
 		
-		
-		// 테이블 FMSCARA, FMSCARB, FMSCARC 불러오기
-		FmscarDAO fmscar = new FmscarDAO();
-		ArrayList<fmscara> cara = fmscar.getfmscara();
-		ArrayList<fmscarb> carb = fmscar.getfmscarb();
-		ArrayList<fmscarc> carc = fmscar.getfmscarc();
 				
 		String fmsr_cd = request.getParameter("fmsr_cd");
 		String user_id = request.getParameter("user_id");
@@ -141,6 +135,11 @@
 		String fname = userDAO.getName(user_id);
 	
 	%>
+	<!-- fmsAdminModal 불러오기 (심각도(등급) 선택 사항 확인을 위함.) -->
+	<jsp:include page="../fmsAdminModal.jsp">
+		<jsp:param value="<%= fmsr_cd %>" name="fmsr_cd"/>
+		<jsp:param value="<%= flist.get(0).getFms_sco() %>" name="fms_sco"/>
+	</jsp:include>
 	
 	<!-- nav바 불러오기 -->
     <jsp:include page="../Nav.jsp"></jsp:include>
@@ -193,8 +192,8 @@
 								<th style="text-align:left"><input id="fms_fov" name="fms_fov" style="width:35%; border:none; text-align:right;" readonly data-toggle="tooltip" data-html="true" data-placement="bottom" title="장애발생 일자, 조치 완료 일자 선택 시 자동으로 계산됩니다." value="<%= flist.get(0).getFms_fov() %>"></input>/190분</th>
 							</tr>
 							<tr class="ui-state-default ui-state-disabled">
-								<th style="text-align: center; border: 1px solid #dddddd;">심각도(등급)</th>
-								<th style="text-align:center"><input id="fms_sev" name="fms_sev" style="width:10%; border:none" readonly data-toggle="tooltip" data-html="true" data-placement="bottom" title="A / B / C 등급 선택으로 산정됩니다." value="<%= flist.get(0).getFms_sev() %>"></input>등급</th>
+								<th style="text-align: center; border: 1px solid #dddddd;" onClick="dataSEV()">심각도(등급)</th>
+								<th style="text-align:center" onClick="dataSEV()"><input id="fms_sev" name="fms_sev" style="width:10%; border:none" readonly data-toggle="tooltip" data-html="true" data-placement="bottom" title="A / B / C 등급 선택으로 산정됩니다." value="<%= flist.get(0).getFms_sev() %>"></input>등급</th>
 								<th style="text-align: center; color:#3104B4; border: 1px solid #dddddd;">장애 인지 경로</th>
 								<th style="text-align:center"><textarea id="fms_rte" name="fms_rte"  class="textarea"  class="textarea" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_rte() %></textarea></th>
 							</tr>

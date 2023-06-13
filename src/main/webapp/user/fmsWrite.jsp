@@ -160,7 +160,7 @@
 							</tr>
 							<tr class="ui-state-default ui-state-disabled">
 								<th style="text-align: center; border: 1px solid #dddddd;  color:#3104B4;" onClick="dataSEV()">심각도(등급)</th>
-								<th style="text-align:center" onClick="dataSEV()"><input id="fms_sev" name="fms_sev" style="width:10%; border:none" readonly data-toggle="tooltip" data-html="true" data-placement="bottom" title="A / B / C 등급 선택으로 산정됩니다." value="-"></input>등급 &nbsp;&nbsp; <button id="sev" type="button">설정</button></th>
+								<th style="text-align:center" onClick="dataSEV()"><input id="fms_sev" name="fms_sev" style="width:10%; border:none" readonly data-toggle="tooltip" data-html="true" data-placement="bottom" title="A / B / C 등급 선택으로 산정됩니다." value="-"></input>등급 &nbsp; 총<input id="fms_sco" name="fms_sco" style="width:30px; border:none; text-align:right" value="0">점 &nbsp; <button id="sev" type="button">설정</button></th>
 								<th style="text-align: center; border: 1px solid #dddddd;  color:#3104B4;">장애 인지 경로</th>
 								<th style="text-align:center">
 									<select name="fms_rte" id="fms_rte" style="width:120px; text-align-last:center;" onchange="rteFunction()" required>
@@ -321,7 +321,7 @@
 	function empty() {
 		var check = confirm("작성된 내용이 삭제됩니다. 정말 비우시겠습니까?");
 		if(check ){
-			location.href='/FMS/user/main.jsp';
+			location.href='/FMS/user/fmsWrite.jsp';
 		}
 	}
 	</script>

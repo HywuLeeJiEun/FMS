@@ -190,7 +190,7 @@
 							</tr>
 							<tr class="ui-state-default ui-state-disabled">
 								<th style="text-align: center; border: 1px solid #dddddd;" onClick="dataSEV()">심각도(등급)</th>
-								<th style="text-align:center" onClick="dataSEV()"><input id="fms_sev" name="fms_sev" style="width:10%; border:none" readonly data-toggle="tooltip" data-html="true" data-placement="bottom" title="A / B / C 등급 선택으로 산정됩니다." value="<%= flist.get(0).getFms_sev() %>"></input>등급 &nbsp;&nbsp; <button id="sev" type="button">재설정</button></th>
+								<th style="text-align:center" onClick="dataSEV()"><input id="fms_sev" name="fms_sev" style="width:10%; border:none" readonly data-toggle="tooltip" data-html="true" data-placement="bottom" title="A / B / C 등급 선택으로 산정됩니다." value="<%= flist.get(0).getFms_sev() %>"></input>등급 &nbsp; 총<input id="fms_sco" name="fms_sco" style="width:30px; border:none; text-align:right" value="<%= flist.get(0).getFms_sco() %>">점 &nbsp; <button id="sev" type="button">재설정</button></th>
 								<th style="text-align: center; border: 1px solid #dddddd;">장애 인지 경로</th>
 								<th style="text-align:center">
 									<select name="fms_rte" id="fms_rte" style="width:120px; text-align-last:center;" onchange="rteFunction()">

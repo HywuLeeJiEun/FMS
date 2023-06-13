@@ -49,6 +49,7 @@
 			String fms_acd = request.getParameter("fms_acd"); //장애 보고 A 구분코드
 			String fms_bcd = request.getParameter("fms_bcd"); //장애 보고 B 구분코드
 			String fms_ccd = request.getParameter("fms_ccd"); //장애 보고 C 구분코드
+			int fms_sco = Integer.parseInt(request.getParameter("fms_sco")); //심각도(등급) 산정 값
 			int fms_sev = Integer.parseInt(request.getParameter("fms_sev")); //구분 등급 표시 (심각도(등급))
 			String fms_rte = request.getParameter("fms_rte"); //장애 인지 경로
 			String fms_dif = request.getParameter("fms_dif"); //장애 분야
@@ -87,7 +88,7 @@
 			fmsr_cd = fmsr_cdDoc + userDAO.getTaskNum(fms_sys) + user_id + rsres ;
 		
 			//에러없이 진행됨!
-			int result = fms.writeFms(fmsr_cd, user_id, fms_doc, fms_con, fms_str, fms_end, fms_rec, fms_fov, fms_acd, fms_bcd, fms_ccd, fms_sev, fms_rte, fms_dif, fms_dcd, fms_sys, fms_dre, fms_drp, fms_sym, fms_emr, fms_dfu, fms_eff, fms_cau, fms_res, fms_sla, sla_rea, fms_sig, fms_upa);
+			int result = fms.writeFms(fmsr_cd, user_id, fms_doc, fms_con, fms_str, fms_end, fms_rec, fms_fov, fms_acd, fms_bcd, fms_ccd, fms_sco, fms_sev, fms_rte, fms_dif, fms_dcd, fms_sys, fms_dre, fms_drp, fms_sym, fms_emr, fms_dfu, fms_eff, fms_cau, fms_res, fms_sla, sla_rea, fms_sig, fms_upa);
 		
 			if(result != -1) {
 				//입력 성공!

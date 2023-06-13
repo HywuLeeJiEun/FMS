@@ -152,7 +152,7 @@
 				<table>
 					<tr>
 						<td><select style="width:90%" class="form-control" name="searchField" id="searchField" onchange="ChangeValue()">
-								<option value="fms_rec" <%= category.equals("fms_rec") ? "selected":"" %>>장애 인지 일자</option>
+								<option value="fms_sla" <%= category.equals("fms_sla") ? "selected":"" %>>SLA 여부</option>
 								<option value="fms_con" <%= category.equals("fms_con") ? "selected":"" %>>장애 내용</option>
 								<option value="fms_sys" <%= category.equals("fms_sys") ? "selected":"" %>>시스템</option>
 								<option value="user_id" <%= category.equals("user_id") ? "selected":"" %>>작성자</option>
@@ -173,24 +173,25 @@
 	<!-- 게시판 메인 페이지 영역 시작 -->
 	<div class="container">
 		<div class="row">
-			<table id="bbsTable" class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
+			<table id="FmsTable" class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 				<thead>
 					<tr>
 						<!-- <th style="background-color: #eeeeee; text-align: center;">번호</th> -->
-						<th style="background-color: #eeeeee; text-align: center;">시스템</th>
-						<th style="width:50%; background-color: #eeeeee; text-align: center;">장애 내용</th>
-						<th style="background-color: #eeeeee; text-align: center;">작성자</th>
-						<th style="background-color: #eeeeee; text-align: center;">심각도</th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(0)">시스템<br><input id="0" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="width:50%; background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(1)">장애 내용<br><input id="1" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(2)">작성자<br><input id="2" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(3)">심각도<br><input id="3" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(4)">점수<br><input id="4" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
 						<% if(dayField.equals("fms_rec")) { %>
-							<th style="background-color: #eeeeee; text-align: center;">장애 인지 일자</th>
+							<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(5)">장애 인지 일자<br><input id="5" style="border:none; width:18px; background-color:transparent;" value="▽"></input></th>
 						<% } else if(dayField.equals("fms_doc")) { %>
-							<th style="background-color: #eeeeee; text-align: center;">보고 작성 일자</th>
+							<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(5)">보고 작성 일자<br><input id="5" style="border:none; width:18px; background-color:transparent;" value="▽"></input></th>
 						<% } else if(dayField.equals("fms_str")) { %>
-							<th style="background-color: #eeeeee; text-align: center;">장애 발생 일자</th>
+							<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(5)">장애 발생 일자<br><input id="5" style="border:none; width:18px; background-color:transparent;" value="▽"></input></th>
 						<% } else if(dayField.equals("fms_end")) { %>
-							<th style="background-color: #eeeeee; text-align: center;">장애 조치 일자</th>
+							<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(5)">장애 조치 일자<br><input id="5" style="border:none; width:18px; background-color:transparent;" value="▽"></input></th>
 						<% } %>
-						<th style="background-color: #eeeeee; text-align: center;">SLA 여부</th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(6)">SLA 여부<br><input id="6" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
 					</tr>
 				</thead>
 				<%
@@ -210,8 +211,10 @@
 							<%= list.get(i).getFms_con() %></a></td>
 						<!-- (3) 작성자 -->	
 						<td><%= userDAO.getName(list.get(i).getUser_id()) %></td>						
-						<!--  (5) 심각도 -->
-						<td><%= list.get(i).getFms_sev() %> 등급</td>
+						<!--  (4) 심각도 -->
+						<td><%= list.get(i).getFms_sev() %>등급</td>
+						<!--  (5) 심각도 값 -->
+						<td><%= list.get(i).getFms_sco() %>점</td>
 						<!-- (6) 장애 인지 일자 (또는 타day) -->
 						<% if(dayField.equals("fms_rec")) { %>
 							<td><%= list.get(i).getFms_rec() %></td>
@@ -279,5 +282,69 @@
 	</script>
 	
 	
+		<script>
+	// Table sort 정렬
+	function sortTable(n) {
+		var table, rows, switching, o, x, y, shouldSwitch, dir, switchcount = 0;
+		table = document.getElementById("FmsTable");
+		switching = true;
+		dir = "asc"; //오름차순
+		
+		// 으름차순 / 내림차순 표시
+		if($("#"+n).val() == "△") {
+			$("#"+n).val("▽");
+			for(var i=0; i < 7; i ++) {
+				if(i != n) {
+					$("#"+i).val("");
+				}
+			}
+		} else {
+			$("#"+n).val("△");
+			for(var i=0; i < 7; i ++) {
+				if(i != n) {
+					$("#"+i).val("");
+				}
+			}
+		}
+		
+		
+		while (switching) {
+			switching = false;
+			rows = table.getElementsByTagName("tr");
+			
+			for(o=1; o < (rows.length -1); o++) {
+				shouldSwitch = false;
+				x = rows[o].getElementsByTagName("td")[n];
+				y = rows[o + 1].getElementsByTagName("td")[n];
+				
+				if(dir == "asc") {
+					if(x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+						shouldSwitch=true;
+						break;
+					}
+				} else if(dir == "desc") {
+					if(x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+						shouldSwitch = true;
+						break;
+					}
+				}
+			}
+			
+			if(shouldSwitch) {
+				rows[o].parentNode.insertBefore(rows[o + 1], rows[o]);
+				switching = true;
+				switchcount ++;
+			} else {
+				if(switchcount == 0 && dir == "asc") {
+					dir = "desc";
+					switching = true;
+				}
+			}
+
+		}
+		
+	}
+	
+	</script>
 </body>
 </html>
