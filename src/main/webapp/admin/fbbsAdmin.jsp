@@ -114,12 +114,12 @@
 				<thead>
 					<tr>
 						<!-- <th style="background-color: #eeeeee; text-align: center;">번호</th> -->
-						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(0)">&nbsp;&nbsp;시스템<input id="0" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
-						<th style=" width:50%; background-color: #eeeeee; text-align: center; cursor:pointer" onclick="sortTable(1)">&nbsp;&nbsp;장애 내용<input id="1" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
-						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(2)">&nbsp;&nbsp;작성자<input id="2" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
-						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(3)">&nbsp;&nbsp;심각도<input id="3" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
-						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(4)">&nbsp;&nbsp;점수<input id="4" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
-						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(5)">&nbsp;&nbsp;장애 인지 일자<input id="5" style="border:none; width:18px; background-color:transparent;" value="▽"></input> </th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(0)">시스템<input type="hidden" readonly id="0" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style=" width:50%; background-color: #eeeeee; text-align: center; cursor:pointer" onclick="sortTable(1)">장애 내용<input type="hidden" readonly id="1" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(2)">작성자<input type="hidden" readonly id="2" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(3)">심각도<input type="hidden" readonly id="3" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(4)">점수<input type="hidden" readonly id="4" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(5)">장애 인지 일자<input id="5" readonly style="border:none; width:18px; background-color:transparent;" value="▽"></input> </th>
 					</tr>
 				</thead>
 				<%
@@ -132,7 +132,7 @@
 						<!-- 게시글 제목을 누르면 해당 글을 볼 수 있도록 링크를 걸어둔다 -->
 					<tr>
 						<!--  (1) 시스템 -->
-						<td><%= userDAO.getManager(list.get(i).getFms_sys()) %></td>
+						<td><%= list.get(i).getFms_sys() %></td>
 						<!-- (2) 장애 내용 -->
 						<td style="text-align:left">
 						<a href="/FMS/admin/fmsUpdateAdmin.jsp?fmsr_cd=<%= list.get(i).getFmsr_cd() %>&user_id=<%= list.get(i).getUser_id() %>">
@@ -199,70 +199,5 @@
 	}
 	</script>
 	
-	
-	<script>
-	// Table sort 정렬
-	function sortTable(n) {
-		var table, rows, switching, o, x, y, shouldSwitch, dir, switchcount = 0;
-		table = document.getElementById("FmsTable");
-		switching = true;
-		dir = "asc"; //오름차순
-		
-		// 으름차순 / 내림차순 표시
-		if($("#"+n).val() == "△") {
-			$("#"+n).val("▽");
-			for(var i=0; i < 6; i ++) {
-				if(i != n) {
-					$("#"+i).val("");
-				}
-			}
-		} else {
-			$("#"+n).val("△");
-			for(var i=0; i < 6; i ++) {
-				if(i != n) {
-					$("#"+i).val("");
-				}
-			}
-		}
-		
-		
-		while (switching) {
-			switching = false;
-			rows = table.getElementsByTagName("tr");
-			
-			for(o=1; o < (rows.length -1); o++) {
-				shouldSwitch = false;
-				x = rows[o].getElementsByTagName("td")[n];
-				y = rows[o + 1].getElementsByTagName("td")[n];
-				
-				if(dir == "asc") {
-					if(x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-						shouldSwitch=true;
-						break;
-					}
-				} else if(dir == "desc") {
-					if(x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-						shouldSwitch = true;
-						break;
-					}
-				}
-			}
-			
-			if(shouldSwitch) {
-				rows[o].parentNode.insertBefore(rows[o + 1], rows[o]);
-				switching = true;
-				switchcount ++;
-			} else {
-				if(switchcount == 0 && dir == "asc") {
-					dir = "desc";
-					switching = true;
-				}
-			}
-
-		}
-		
-	}
-	
-	</script>
 </body>
 </html>

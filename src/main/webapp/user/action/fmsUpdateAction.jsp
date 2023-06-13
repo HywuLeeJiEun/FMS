@@ -54,7 +54,7 @@
 			String fms_rte = request.getParameter("fms_rte"); //장애 인지 경로
 			String fms_dif = request.getParameter("fms_dif"); //장애 분야
 			String fms_dcd = request.getParameter("fms_dcd"); //중복 장애 여부(공통 테이블)
-			String fms_sys = request.getParameter("fms_sys"); //장애 시스템(장애 발생 업무) => 코드로 삽입
+			String fms_sys = request.getParameter("fms_sys"); //장애 시스템(장애 발생 업무)
 			String fms_dre = request.getParameter("fms_dre"); //향후 대책 총 내용
 			String fms_drp = request.getParameter("fms_drp"); //향후 대책 중 실행 계획
 			String fms_sym = request.getParameter("fms_sym"); //장애 증상             
@@ -101,37 +101,7 @@
 		} 
 		
 	%>
-	
-	
-	<%-- <textarea>mainaction 페이지</textarea>
-	<br>
-	<textarea><%= fmsr_cd %></textarea><br>
-	<textarea><%= user_id %></textarea><br>
 
-	<textarea><%= fms_con %></textarea><br>
-	<textarea><%= fms_str %></textarea><br>
-	<textarea><%= fms_end %></textarea><br>
-	<textarea><%= fms_rec %></textarea><br>
-	<textarea><%= fms_fov %></textarea><br>
-	<textarea><%= fms_acd %></textarea><br>
-	<textarea><%= fms_bcd %></textarea><br>
-	<textarea><%= fms_ccd %></textarea><br>
-	<textarea><%= fms_sev %></textarea><br>
-	<textarea><%= fms_rte %></textarea><br>
-	<textarea><%= fms_dif %></textarea><br>
-	<textarea><%= fms_dcd %></textarea><br>
-	<textarea><%= fms_sys %></textarea><br>
-	<textarea><%= fms_dre %></textarea><br>
-	<textarea><%= fms_drp %></textarea><br>
-	<textarea><%= fms_sym %></textarea><br>
-	<textarea><%= fms_emr %></textarea><br>
-	<textarea><%= fms_dfu %></textarea><br>
-	<textarea><%= fms_eff %></textarea><br>
-	<textarea><%= fms_cau %></textarea><br>
-	<textarea><%= fms_res %></textarea><br>
-	<textarea><%= fms_sla %></textarea><br>
-	<textarea><%= fms_sig %></textarea><br>
-	<textarea><%= fms_upa %></textarea><br>  --%>
 	
 </body>
 </html>

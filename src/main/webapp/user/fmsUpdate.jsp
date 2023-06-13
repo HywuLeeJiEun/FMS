@@ -248,21 +248,21 @@
 								<th style="text-align:center"><%= name %> <%= rank %></th>
 								<th style="text-align: center; border: 1px solid #dddddd;">장애 시스템</th>
 								<th style="text-align:center">
-									 <select name="fms_sys" id="fms_sys" style="height:45px; width:120px; text-align-last:center;">
+									 <select name="fms_sys" id="fms_sys" style="height:45px; width:120px; text-align-last:center;" onchange="sysFunction()"> 
 											 <%
 											 for(int count=0; count < works.size(); count++) {
 												 String nwo = works.get(count).replaceAll("/", "");
 											 %>
-											 	<option <%= userDAO.getManager(flist.get(0).getFms_sys()).equals(nwo.trim())?"Selected":"" %> value="<%= userDAO.getTaskNum(nwo.trim())%>" > <%= nwo.trim() %> </option>
+											 	<option <%= userDAO.getManager(flist.get(0).getFms_sys()).equals(nwo.trim())?"Selected":"" %>> <%= nwo.trim() %> </option>
 											 <%
 											 }
-											 if(flist.get(0).getFms_sys().equals("00")) {
+											 if(!works.contains(flist.get(0).getFms_sys())) { // 시스템 목록에 없는 경우, - 기타 선택 후 작성한 경우임!
 											 %>
-											 <option <%= flist.get(0).getFms_sys().equals("00")?"Selected":"" %> value="<%= flist.get(0).getFms_sys() %>" ><%= userDAO.getManager(flist.get(0).getFms_sys()) %> </option>
-											<% } else { %>
-											<option value="00">기타</option>
+											 <option  Selected value="<%= flist.get(0).getFms_sys() %>"><%= flist.get(0).getFms_sys() %></option>
 											<% } %>
+											<option value="<%= userDAO.getManager("00") %>"><%= userDAO.getManager("00") %></option>
 									</select>
+									<div><input id="sys_val" placeholder="장애시스템 작성" style="display:none; margin-top:10px; width:120px; height:40px; text-align-last:center;"></input></div>
 								</th>
 							</tr>
 							
@@ -340,10 +340,10 @@
 									} else if (flist.get(0).getFms_sig().equals("제출")) {
 							%>
 							<a type="button" href="/FMS/user/action/fmsSignAction.jsp?fmsr_cd=<%= flist.get(0).getFmsr_cd() %>&fms_sig=저장" onClick="return confirm('저장 상태로 되돌립니다. 수정 및 삭제가 가능해지며, 관리자의 승인 이후에는 변경이 불가합니다.')" style="margin-bottom:50px; margin-left:20px" class="btn btn-danger pull-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="제출을 취소하여 수정/삭제가 가능하도록 합니다.">변경</a>		
-							
-							<a type="button" href="/FMS/user/action/csvPrintAction.jsp?fmsr_cd=<%= flist.get(0).getFmsr_cd() %>" style="margin-bottom:50px; margin-left:20px" class="btn btn-success pull-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title=".csv 파일로 출력합니다.">출력</a>	
-							<%
-									}
+							<% } if(flist.get(0).getFms_sig().equals("승인") || flist.get(0).getFms_sig().equals("제출")) { %>
+								<a type="button" href="/FMS/user/action/csvPrintAction.jsp?fmsr_cd=<%= flist.get(0).getFmsr_cd() %>" style="margin-bottom:50px; margin-left:20px" class="btn btn-success pull-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title=".csv 파일로 출력합니다.">출력</a>	
+										
+							<% 		}
 								}
 							%>
 						</div>
@@ -395,9 +395,16 @@
         	var text = $("#etc_val").val();
       	  	var a = $("#fms_rte").val();
       	  	var b = $("#fms_rte option[value='"+a+"']").val(text);
-  			alert("변경 : " +$("#fms_rte").val());
+  			//alert("변경 : " +$("#fms_rte").val());
         }); 
         
+     	// 기타 옵션 선택 후, 작성시 (장애 시스템)
+        $('#sys_val').on("input", function(event) {
+        	var text = $("#sys_val").val();
+      	  	var a = $("#fms_sys").val();
+      	  	var b = $("#fms_sys option[value='"+a+"']").val(text);
+      	  	//alert($("#fms_sys").val());
+        }); 
       });
     </script>
 	
@@ -446,6 +453,19 @@
 			//alert("기타 선택");
 			etc_val.style.display = '';
 			etc_val.required = true;
+		}
+	}
+	
+	// 기타 옵션 선택시, 작성할 수 있도록 함! (장애 시스템)
+	function sysFunction() { 
+		const sys_val = document.getElementById("sys_val");
+		if($("#fms_sys").val().indexOf("기타") == -1) {
+			sys_val.style.display = 'none';
+			sys_val.required = false;
+		} else { 
+			//alert("기타 선택");
+			sys_val.style.display = '';
+			sys_val.required = true;
 		}
 	}
 	</script>

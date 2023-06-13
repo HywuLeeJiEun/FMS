@@ -54,7 +54,7 @@
 			String fms_rte = request.getParameter("fms_rte"); //장애 인지 경로
 			String fms_dif = request.getParameter("fms_dif"); //장애 분야
 			String fms_dcd = request.getParameter("fms_dcd"); //중복 장애 여부(공통 테이블)
-			String fms_sys = userDAO.getTaskNum(request.getParameter("fms_sys")); //장애 시스템(장애 발생 업무) => 코드로 삽입
+			String fms_sys = request.getParameter("fms_sys"); //장애 시스템(장애 발생 업무) => 코드로 삽입
 			String fms_dre = request.getParameter("fms_dre"); //향후 대책 총 내용
 			String fms_drp = request.getParameter("fms_drp"); //향후 대책 중 실행 계획
 			String fms_sym = request.getParameter("fms_sym"); //장애 증상             

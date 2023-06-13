@@ -115,15 +115,6 @@
 
 				</table>
 			</form>
-			<!-- <table class="pull-left" style="text-align: center; cellpadding:50px; width:60%" >
-			<thead>
-				<tr>
-					<th style=" text-align: left" data-toggle="tooltip" data-html="true" data-placement="bottom" title=""> 
-						<br>* 저장 <input type="checkbox" name="saveChk" id="saveChk"></input> &nbsp&nbsp&nbsp   * 제출/승인 <input type="checkbox" name="signChk" id="signChk"></input> 
-					</th>
-				</tr>
-			</thead>
-			</table> -->
 		</div>
 	</div>
 	<br>
@@ -133,17 +124,17 @@
 	<!-- 게시판 메인 페이지 영역 시작 -->
 	<div class="container">
 		<div class="row">
-			<table id="bbsTable" class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
+			<table id="FmsTable" class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 				<thead>
 					<tr>
 						<!-- <th style="background-color: #eeeeee; text-align: center;">번호</th> -->
-						<th style="background-color: #eeeeee; text-align: center;">작성일</th>
-						<th style="background-color: #eeeeee; text-align: center;">장애 내용</th>
-						<th style="background-color: #eeeeee; text-align: center;">작성자</th>
-						<th style="background-color: #eeeeee; text-align: center;">시스템</th>
-						<th style="background-color: #eeeeee; text-align: center;">심각도</th>
-						<th style="background-color: #eeeeee; text-align: center;">수정일</th>
-						<th style="background-color: #eeeeee; text-align: center;">상태</th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(0)">작성일<input id="0" type="hidden" readonly style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style=" width:45%; background-color: #eeeeee; text-align: center; cursor:pointer" onclick="sortTable(1)">장애 내용<input id="1" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(2)">작성자<input id="2" type="hidden" readonly style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(3)">시스템<input id="3" type="hidden" readonly style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(4)">심각도<input id="4" type="hidden" readonly style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(5)">수정일<input id="5" readonly style="border:none; width:18px; background-color:transparent;" value="▽"></input> </th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(6)">상태<input id="6" type="hidden" readonly style="border:none; width:18px; background-color:transparent;" value=""></input> </th>
 					</tr>
 				</thead>
 				<tbody>
@@ -161,7 +152,7 @@
 						<!-- (3) 작성자 -->	
 						<td><%= name %></td>
 						<!--  (4) 시스템 -->
-						<td><%= userDAO.getManager(list.get(i).getFms_sys()) %></td>
+						<td><%= list.get(i).getFms_sys() %></td>
 						<!--  (4) 심각도 -->
 						<td><%= list.get(i).getFms_sev() %> 등급</td>
 						<!-- (5) 작성일/수정일-->

@@ -193,18 +193,19 @@
 								<th style="text-align:center"><%= name %> <%= rank %></th>
 								<th style="text-align: center; border: 1px solid #dddddd;  color:#3104B4;">장애 시스템</th>
 								<th style="text-align:center">
-									 <select name="fms_sys" id="fms_sys" style="height:45px; width:120px; text-align-last:center;">
+									 <select name="fms_sys" id="fms_sys" style="height:45px; width:120px; text-align-last:center;" onchange="sysFunction()">
 											 <option>[선택]</option>
 											 <%
 											 for(int count=0; count < works.size(); count++) {
 												 String nwo = works.get(count).replaceAll("/", "");
 											 %>
-											 	<option> <%= nwo %> </option>
+											 	<option value="<%= nwo %>"> <%= nwo %> </option>
 											 <%
 											 }
 											 %>
-											 <option><%= userDAO.getManager("00") %></option>
+											 <option value="<%= userDAO.getManager("00") %>"><%= userDAO.getManager("00") %></option>
 									</select>
+									<div><input id="sys_val" placeholder="장애시스템 작성" style="display:none; margin-top:10px; width:120px; height:40px; text-align-last:center;"></input></div>
 								</th>
 							</tr>
 							
@@ -306,13 +307,22 @@
           }
          });
         
-        // 기타 옵션 선택 후, 작성시
+        // 기타 옵션 선택 후, 작성시 (장애 인지 경로)
         $('#etc_val').on("input", function(event) {
-        	  //var text = event.target.value;
+        	//var text = event.target.value;
         	var text = $("#etc_val").val();
       	  	var a = $("#fms_rte").val();
       	  	var b = $("#fms_rte option[value='"+a+"']").val(text);
       	  	//alert($("#fms_rte").val());
+        }); 
+        
+
+        // 기타 옵션 선택 후, 작성시 (장애 시스템)
+        $('#sys_val').on("input", function(event) {
+        	var text = $("#sys_val").val();
+      	  	var a = $("#fms_sys").val();
+      	  	var b = $("#fms_sys option[value='"+a+"']").val(text);
+      	  	//alert($("#fms_sys").val());
         }); 
       });
     </script>
@@ -354,7 +364,7 @@
 	</script>
 	
 	<script>
-	// 기타 옵션 선택시, 작성할 수 있도록 함!
+	// 기타 옵션 선택시, 작성할 수 있도록 함! (장애 인지 경로)
 	function rteFunction() {
 		const etc_val = document.getElementById("etc_val");
 		if($("#fms_rte").val().indexOf("기타") == -1) {
@@ -364,6 +374,19 @@
 			//alert("기타 선택");
 			etc_val.style.display = '';
 			etc_val.required = true;
+		}
+	}
+	
+	// 기타 옵션 선택시, 작성할 수 있도록 함! (장애 시스템)
+	function sysFunction() { 
+		const sys_val = document.getElementById("sys_val");
+		if($("#fms_sys").val().indexOf("기타") == -1) {
+			sys_val.style.display = 'none';
+			sys_val.required = false;
+		} else { 
+			//alert("기타 선택");
+			sys_val.style.display = '';
+			sys_val.required = true;
 		}
 	}
 	</script>
