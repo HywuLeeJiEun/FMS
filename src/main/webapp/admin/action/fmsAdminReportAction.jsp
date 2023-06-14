@@ -1,3 +1,4 @@
+<%@page import="java.io.PrintWriter"%>
 <%@page import="java.io.OutputStream"%>
 <%@page import="java.io.File"%>
 <%@page import="java.io.FileOutputStream"%>
@@ -38,7 +39,18 @@
 <body>
 <% 
 	String year = request.getParameter("year");
+	String str_day = request.getParameter("str_day");
+	String end_day = request.getParameter("end_day");
 
+	if(year == null || str_day == null || end_day == null) {
+		PrintWriter script = response.getWriter();
+		script.println("<script>");
+		script.println("alert('해당 범위의 데이터가 없습니다.')");
+		script.println("history.back();");
+		script.println("</script>");
+	} else {
+	
+	
 	FmsreptDAO fms = new FmsreptDAO();
 	FmsuserDAO userDAO = new FmsuserDAO();
 	
@@ -52,8 +64,8 @@
 	ArrayList<Integer> slist = new ArrayList<>();
 	
 	// year - 인지일자(FMS_REC)을 기준으로 데이터를 조회합니다.
-	ArrayList<fmsrept> list = fms.getExcelfms(year);
-	
+	ArrayList<fmsrept> list = fms.getExcelfms("fms_rec",str_day, end_day);
+	System.out.println(list.size());
 	
 	//LinkedHashSet을 통해 중복을 제거한 순서 있는 fms_recm 데이터를 수집합니다.
 	HashSet<Integer> rec = new HashSet<Integer>();
@@ -113,7 +125,7 @@
 			//System.out.println(mm);
 			
 			// year-mm - 인지일자(FMS_REC)을 기준으로 데이터를 조회합니다.
-			ArrayList<fmsrept> flist = fms.getExcelfms(year+"-"+mm);
+			ArrayList<fmsrept> flist = fms.getExcelMMfms("fms_rec", year+"-"+mm);
 			fovAll = 0;
 			
 			int fovAllRow = 10;
@@ -249,7 +261,7 @@
 	// 완료후 파일 삭제
 	dFile.delete();
 	
-
+	}
 
 %>
 </body>

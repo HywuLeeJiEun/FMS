@@ -85,6 +85,11 @@
 		// 시스템 출력을 위한 목록 불러오기 (유저가 작성한 장애보고 중, 시스템 목록)
 		ArrayList<String> syslist = fms.getDistSys(id);
 		
+		String option = "기타";
+		if(syslist.size() != 0) {
+			option = syslist.get(0);
+		}
+		
 	
 	%>
 	    
@@ -113,13 +118,19 @@
 								<option value="fms_con">장애 내용</option>
 						</select></td>
 						<td><input type="hidden" class="form-control" style="margin-right:10px"
-							placeholder="검색어 입력" name="searchText" id="searchText" maxlength="100" value="<%=  syslist.get(0) %>">
+							placeholder="검색어 입력" name="searchText" id="searchText" maxlength="100" value="<%=  option %>">
 							<select class="form-control" name="searchSys" id="searchSys" style="margin-right:10px; display:block;" onchange="ChangeSys()">
 								<!-- 시스템 목록 출력 -->
 								<%
+								if(syslist.size() != 0) {	
 									for(int i=0; i < syslist.size(); i++) {
 								%>
 									<option><%= syslist.get(i) %></option>
+								<%
+									} 
+								} else {
+								%>
+								<option>기타</option>
 								<% } %>
 							</select></td>
 						<td><button type="submit" style="margin:5px" class="btn btn-success">검색</button></td>

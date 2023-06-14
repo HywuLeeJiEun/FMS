@@ -69,7 +69,7 @@
 
 %>
 
-<!-- fmsModal 불러오기 (심각도(등급)을 구하기 위함) -->
+<!-- fmsModal 불러오기 (Report 출력을 위함) -->
 	<jsp:include page="fbbsAdminReport.jsp"></jsp:include>
 
    <!-- ************ 상단 네비게이션바 영역 ************* -->

@@ -412,13 +412,14 @@ public class FmsreptDAO {
 	}
 	
 	
-	//FMSREPT - <Excel출력> 인지일자(fms_rec)를 기준으로 '년도' 기준 데이터 찾기  // fmsExcelAction.jsp
-	public ArrayList<fmsrept> getExcelfms(String year) {
+	//FMSREPT - <Excel출력> 인지일자(fms_rec)를 기준으로 '년도-월-일' 기준 데이터 찾기  // fmsExcelAction.jsp
+	public ArrayList<fmsrept> getExcelfms(String fms_day, String str_day, String end_day) {
 		ArrayList<fmsrept> list = new ArrayList<fmsrept>();
-		String SQL = "select * from fmsrept where fms_rec ";
-		if(year != null && ! year.equals("")) {
-			   SQL += " LIKE '"+year+"%' and fms_sig='승인' order by fms_rec desc";
+		String SQL = "select * from fmsrept where "+fms_day;
+		if(str_day != null && ! str_day.equals("") && end_day != null && ! end_day.equals("")) {
+			   SQL += " between '"+str_day+"' and '"+end_day+"' and fms_sig='승인' order by "+fms_day+" desc";
 		} else {
+			//System.out.println(SQL);
 			return list;
 		}
 		try {
@@ -461,14 +462,68 @@ public class FmsreptDAO {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+		//System.out.println(SQL);
 		return list;
 	}
 	
 	
-	//FMSREPT - fmsrept의 fms_rec(인지일자) 기준 년도 데이터 확인하기 // fbbsAdminReport.jsp
-	public ArrayList<String> getYearFms(int num, String fms_sig) {
+	//FMSREPT - <Excel출력> 인지일자(fms_rec)를 기준으로 '년도-월' 기준 데이터 찾기  // fmsExcelAction.jsp
+		public ArrayList<fmsrept> getExcelMMfms(String fms_day, String year) {
+			ArrayList<fmsrept> list = new ArrayList<fmsrept>();
+			String SQL = "select * from fmsrept where "+fms_day ;
+			if(year != null && ! year.equals("")) {
+				   SQL += " LIKE '"+year+"%' and fms_sig='승인' order by "+fms_day+" desc";
+			} else {
+				return list;
+			}
+			try {
+				PreparedStatement pstmt = conn.prepareStatement(SQL);
+				rs = pstmt.executeQuery(); //select
+				while(rs.next()) {
+					fmsrept fms = new fmsrept();
+					fms.setFmsr_cd(rs.getString(1));  // 구분 코드
+					fms.setUser_id(rs.getString(2));  // 사용자 정보
+					fms.setFms_doc(rs.getString(3));  // 작성일
+					fms.setFms_con(rs.getString(4));  // 작성 내용
+					fms.setFms_str(rs.getString(5));  // 장애발생 일자
+					fms.setFms_end(rs.getString(6));  // 조치 완료 일자
+					fms.setFms_rec(rs.getString(7));  // 장애 인지 일자
+					fms.setFms_fov(rs.getString(8));  // 장애 시간
+					fms.setFms_acd(rs.getString(9));  // A코드
+					fms.setFms_bcd(rs.getString(10)); // B코드
+					fms.setFms_ccd(rs.getString(11)); // C코드
+					fms.setFms_sco(rs.getInt(12));    // 등급 표시 값
+					fms.setFms_sev(rs.getInt(13));    // 등급 표시
+					fms.setFms_rte(rs.getString(14)); // 장애 인지 경로
+					fms.setFms_dif(rs.getString(15)); // 장애 분야
+					fms.setFms_dcd(rs.getString(16)); // 중복 장애 여부
+					fms.setFms_sys(rs.getString(17)); // 장애 시스템(장애 발생 업무)
+					fms.setFms_dre(rs.getString(18)); // 향후 대책 총 내용
+					fms.setFms_drp(rs.getString(19)); // 향후 대책 중, 실행 계획
+					fms.setFms_sym(rs.getString(20)); // 장애 증상
+					fms.setFms_emr(rs.getString(21)); // 조치 내용 (긴급)
+					fms.setFms_dfu(rs.getString(22)); // 조치 사항 (후속)
+					fms.setFms_eff(rs.getString(23)); // 업무 영향
+					fms.setFms_cau(rs.getString(24)); // 장애 원인
+					fms.setFms_res(rs.getString(25)); // 장애 책임
+					fms.setFms_sla(rs.getString(26)); // SLA 대상여부
+					fms.setSla_rea(rs.getString(27)); // SLA 대상여부 '비해당'시, 사유
+					fms.setFms_sig(rs.getString(28)); // 승인 및 상태 확인
+					fms.setFms_upa(rs.getString(29)); // 수정일
+					list.add(fms);
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			return list;
+		}
+	
+	
+	//FMSREPT - fmsrept의 일자 기준 년도 데이터 확인하기 // fbbsAdminReport.jsp
+	public ArrayList<String> getYearFms(String fms_day, int num, String fms_sig) {
 		ArrayList<String> list = new ArrayList<String>();
-		String SQL = "select distinct(left(fms_rec, ?)) from fmsrept where fms_sig=?"; 
+		String SQL = "select distinct(left("+fms_day.trim()+", ?)) from fmsrept where fms_sig=?"; 
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
 			pstmt.setInt(1, num);
@@ -483,6 +538,24 @@ public class FmsreptDAO {
 		}
 		return list;
 	}
+	
+	
+	//FMSREPT - fmsrept의 일자 기준 최소(min), 최대(max) 구하기 // fbbsAdminReport.jsp
+		public String getminmaxFms(String minmax, String fms_day, String fms_sig) {
+			String SQL = "select "+minmax+"("+fms_day+") from fmsrept where fms_sig=?"; 
+			try {
+				PreparedStatement pstmt = conn.prepareStatement(SQL);
+				pstmt.setString(1, fms_sig);
+				rs = pstmt.executeQuery(); //select
+				if(rs.next()) {
+					return rs.getString(1); 
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			return "";
+		}
 	
 	
 	//FMSREPT - fmsrept table excel 출력하기
