@@ -164,7 +164,7 @@
 							<select class="form-control" name="searchSys" id="searchSys" style="margin-right:10px; display:none;" onchange="ChangeSys()">
 								<!-- 시스템 목록 출력 -->
 								<%
-									ArrayList<String> syslist = fms.getDistSys();
+									ArrayList<String> syslist = fms.getDistSys(null);
 								
 									for(int i=0; i < syslist.size(); i++) {
 								%>

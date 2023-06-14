@@ -88,7 +88,7 @@
 	String user_name = request.getParameter("user_name"); // 담당자
 	String fms_endc = request.getParameter("fms_endc"); // 완료예정일
 	
-	
+	System.out.println(fms_emr);
 
 	// 원본 파일 로드
 	String docx = "C:\\Users\\S-OIL\\git\\FMS\\src\\main\\webapp\\WEB-INF\\fault_reports\\FMSFile\\SOIL_Application.docx";
@@ -514,10 +514,10 @@
 	// ########### 어플리케이션 장애 심각도 설정 ##########
 	table = doc.getTables().get(4);
 	int w = aw * bw * cw;
-	System.out.println(w);
+	/* System.out.println(w);
 	System.out.println(aw);
 	System.out.println(bw);
-	System.out.println(cw);
+	System.out.println(cw); */
 	if(w >= 100) {
 		XWPFTableCell cell = table.getRow(1).getTableCells().get(4);
 		//스타일 적용하기

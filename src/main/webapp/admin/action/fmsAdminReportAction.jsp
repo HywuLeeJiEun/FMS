@@ -144,7 +144,7 @@
 							cell.setCellValue(j+1);
 						} else if (j == 1) {
 							// 시스템
-							cell.setCellValue(userDAO.getManager(flist.get(r).getFms_sys()));
+							cell.setCellValue(flist.get(r).getFms_sys());
 						} else if (j == 2) {
 							// 인지일시
 							cell.setCellValue(flist.get(r).getFms_rec());

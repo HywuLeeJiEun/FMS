@@ -81,6 +81,10 @@
 		// 다음 페이지가 있는지 확인!
 		ArrayList<fmsrept> aflist = fms.getfms(id, pageNumber+1);
 		
+		
+		// 시스템 출력을 위한 목록 불러오기 (유저가 작성한 장애보고 중, 시스템 목록)
+		ArrayList<String> syslist = fms.getDistSys(id);
+		
 	
 	%>
 	    
@@ -108,8 +112,16 @@
 								<option value="fms_sys">시스템</option>
 								<option value="fms_con">장애 내용</option>
 						</select></td>
-						<td><input type="text" class="form-control"
-							placeholder="검색어 입력" name="searchText" maxlength="100"></td>
+						<td><input type="hidden" class="form-control" style="margin-right:10px"
+							placeholder="검색어 입력" name="searchText" id="searchText" maxlength="100" value="<%=  syslist.get(0) %>">
+							<select class="form-control" name="searchSys" id="searchSys" style="margin-right:10px; display:block;" onchange="ChangeSys()">
+								<!-- 시스템 목록 출력 -->
+								<%
+									for(int i=0; i < syslist.size(); i++) {
+								%>
+									<option><%= syslist.get(i) %></option>
+								<% } %>
+							</select></td>
 						<td><button type="submit" style="margin:5px" class="btn btn-success">검색</button></td>
 					</tr>
 
@@ -196,14 +208,34 @@
 	<script src="../css/js/bootstrap.js"></script>
 	<script src="../modalFunction.js"></script>
 	
-
-	
 	<script>
-		function ChangeValue() {
-			var value_str = document.getElementById('searchField');
+	function ChangeValue() {
+		var value_str = document.getElementById('searchField');
+		if(value_str.value == "fms_sys") {
+			$("#searchText").attr('type','hidden'); //텍스트 필드가 보이지 않도록 수정합니다.
+			$("#searchSys").css('display', 'block'); //선택 상자 출력
 			
+			// 값 변경
+			$("#searchText").attr('value',$("#searchSys").val());
+
+		}else {
+			$("#searchText").attr('type','text'); 
+			$("#searchSys").css('display', 'none');
+			
+			// 값 변경
+			$("#searchText").attr('value', "");
 		}
+		
+	}
+
+	function ChangeSys() {
+		var value_str = document.getElementById('searchSys');
+		// 값 변경
+		$("#searchText").attr('value',value_str.value);
+	}
+	
 	</script>
+	
 	
     <!-- 보고 개수에 따라 버튼 노출 (list.size()) -->
 	<script>

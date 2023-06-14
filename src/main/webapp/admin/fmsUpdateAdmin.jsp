@@ -176,7 +176,7 @@
 							</tr>
 							<tr class="ui-state-default">
 								<th style="text-align: center; color:#3104B4; border: 1px solid #dddddd;">장애 내용</th>
-								<th style="text-align: center;border: 1px solid #dddddd;" colspan="3"><textarea class="textarea"  class="textarea" id="fms_con" name="fms_con" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_con() %></textarea></th>
+								<th style="text-align: center;border: 1px solid #dddddd;" colspan="3"><textarea maxlength="1000" class="textarea"  class="textarea" id="fms_con" name="fms_con" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_con() %></textarea></th>
 							</tr>
 							<tr class="ui-state-default ui-state-disabled">
 								<th style="text-align: center; border: 1px solid #dddddd;">장애 발생 일자</th>
@@ -239,7 +239,7 @@
 							<!--  SLA 대상 여부가 비해당인 경우, 사유 입력 -->
 							<tr id="reaTr" class="ui-state-default ui-state-disabled">
 								<th style="text-align: center; color:#3104B4; border: 1px solid #dddddd;">사유</th>
-								<th style="text-align:center" colspan="3"><textarea id="sla_rea" name="sla_rea" class="textarea"  class="textarea" style="width:100%; border:none; resize:none" required><%= flist.get(0).getSla_rea() %></textarea></th>
+								<th style="text-align:center" colspan="3"><textarea id="sla_rea" name="sla_rea" class="textarea" maxlength="1000"  class="textarea" style="width:100%; border:none; resize:none" required><%= flist.get(0).getSla_rea() %></textarea></th>
 							</tr>
 							
 							<!-- 세부 장애 내용 -->
@@ -248,23 +248,23 @@
 							</tr>
 							<tr class="ui-state-default">
 								<th style="text-align: center; color:#3104B4; border: 1px solid #dddddd;">장애 증상</th>
-								<th style="text-align: center; border: 1px solid #dddddd;" colspan="3"><textarea class="textarea"  class="textarea" id="fms_sym" name="fms_sym" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_sym() %></textarea></th>
+								<th style="text-align: center; border: 1px solid #dddddd;" colspan="3"><textarea class="textarea" maxlength="800"  class="textarea" id="fms_sym" name="fms_sym" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_sym() %></textarea></th>
 							</tr>
 							<tr class="ui-state-default">
 								<th style="text-align: center; color:#3104B4; border: 1px solid #dddddd;">조치 내용<br>(긴급)</th>
-								<th style="text-align: center; border: 1px solid #dddddd;" colspan="3"><textarea class="textarea"  class="textarea" id="fms_emr" name="fms_emr" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_emr() %></textarea></th>
+								<th style="text-align: center; border: 1px solid #dddddd;" colspan="3"><textarea class="textarea" maxlength="800" class="textarea" id="fms_emr" name="fms_emr" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_emr() %></textarea></th>
 							</tr>
 							<tr class="ui-state-default">
 								<th style="text-align: center; color:#3104B4; border: 1px solid #dddddd;">조치 사항<br>(후속)</th>
-								<th style="text-align: center; border: 1px solid #dddddd;" colspan="3"><textarea class="textarea"  class="textarea" id="fms_dfu" name="fms_dfu" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_dfu() %></textarea></th>
+								<th style="text-align: center; border: 1px solid #dddddd;" colspan="3"><textarea class="textarea" maxlength="800" class="textarea" id="fms_dfu" name="fms_dfu" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_dfu() %></textarea></th>
 							</tr>	
 							<tr class="ui-state-default">
 								<th style="text-align: center; color:#3104B4; border: 1px solid #dddddd;">업무 영향</th>
-								<th style="text-align: center; border: 1px solid #dddddd;" colspan="3"><textarea class="textarea"  class="textarea" id="fms_eff" name="fms_eff" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_eff() %></textarea></th>
+								<th style="text-align: center; border: 1px solid #dddddd;" colspan="3"><textarea class="textarea" maxlength="800" class="textarea" id="fms_eff" name="fms_eff" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_eff() %></textarea></th>
 							</tr>
 							<tr class="ui-state-default">
 								<th style="text-align: center; color:#3104B4; border: 1px solid #dddddd;">장애 원인</th>
-								<th style="text-align: center; border: 1px solid #dddddd;" colspan="3"><textarea class="textarea"  class="textarea" id="fms_cau" name="fms_cau" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_cau() %></textarea></th>
+								<th style="text-align: center; border: 1px solid #dddddd;" colspan="3"><textarea class="textarea" maxlength="800" class="textarea" id="fms_cau" name="fms_cau" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_cau() %></textarea></th>
 							</tr>
 							<tr class="ui-state-default" style="display:none">
 								<th><textarea id="fms_res" name="fms_res"><%= flist.get(0).getFms_res() %></textarea></th>
@@ -281,7 +281,7 @@
 								<th colspan="6" style="text-align: center; color:#3104B4; border: 1px solid #dddddd; background-color: #A4A4A4;">향후 대책
 							</tr>
 							<tr class="ui-state-default ui-state-disabled">
-								<th colspan="6" style="text-align: center; border: 1px solid #dddddd;"><textarea class="textarea"  class="textarea" id="fms_dre" name="fms_dre" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_dre() %></textarea>
+								<th colspan="6" style="text-align: center; border: 1px solid #dddddd;"><textarea class="textarea" maxlength="800" class="textarea" id="fms_dre" name="fms_dre" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_dre() %></textarea>
 							</tr>
 							<tr class="ui-state-default">
 								<th style="text-align: center; color:#3104B4; border: 1px solid #dddddd;" colspan="2">실행계획</th>
@@ -289,7 +289,7 @@
 								<th style="text-align: center; border: 1px solid #dddddd;">완료 예정일</th>
 							</tr>
 							<tr>
-								<th style="text-align: center; border: 1px solid #dddddd;" colspan="2"><textarea class="textarea"  class="textarea" id="fms_drp" name="fms_drp" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_drp() %></textarea></th>
+								<th style="text-align: center; border: 1px solid #dddddd;" colspan="2"><textarea class="textarea" maxlength="500" class="textarea" id="fms_drp" name="fms_drp" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_drp() %></textarea></th>
 								<th style="text-align: center; border: 1px solid #dddddd;"><%= userDAO.getName(user_id) %></th>
 								<th style="text-align: center; border: 1px solid #dddddd;"><input style="text-align:center; border:none" id="fms_endc" required data-toggle="tooltip" data-placement="bottom" title="조치 완료 일자를 기준으로 작성됩니다." readonly value="<%= flist.get(0).getFms_end().substring(0,10) %>"></input></th>
 							</tr>

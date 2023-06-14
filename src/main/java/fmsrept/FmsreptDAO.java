@@ -413,11 +413,11 @@ public class FmsreptDAO {
 	
 	
 	//FMSREPT - <Excel출력> 인지일자(fms_rec)를 기준으로 '년도' 기준 데이터 찾기  // fmsExcelAction.jsp
-	public ArrayList<fmsrept> getExcelfms(String day) {
+	public ArrayList<fmsrept> getExcelfms(String year) {
 		ArrayList<fmsrept> list = new ArrayList<fmsrept>();
 		String SQL = "select * from fmsrept where fms_rec ";
-		if(day != null && ! day.equals("")) {
-			   SQL += " LIKE '"+day+"%' and fms_sig='승인' order by fms_rec desc";
+		if(year != null && ! year.equals("")) {
+			   SQL += " LIKE '"+year+"%' and fms_sig='승인' order by fms_rec desc";
 		} else {
 			return list;
 		}
@@ -488,10 +488,8 @@ public class FmsreptDAO {
 	//FMSREPT - fmsrept table excel 출력하기
 	public int PrintExcel(String fmsr_cd, String csvName) {
 		String sql = "select '시스템','인지일시','발생일시', '종료일시', '장애소요시간(분)','장애내용','장애원인','장애등급','장애조치','후속조치' union "
-				+ "select t.task_wk, r.fms_rec, r.fms_str, r.fms_end, r.fms_fov, r.fms_con, fms_cau, fms_sev, fms_emr, fms_dfu "
+				+ "select r.fms_sys, r.fms_rec, r.fms_str, r.fms_end, r.fms_fov, r.fms_con, fms_cau, fms_sev, fms_emr, fms_dfu "
 				+ "from fmsrept r "
-				+ "left join fmstask t "
-				+ "on r.fms_sys = t.task_num "
 				+ "where r.fmsr_cd = ? "
 				+ "INTO OUTFILE '"+csvName+"' "
 				+ "character set euckr "
@@ -515,9 +513,12 @@ public class FmsreptDAO {
 	}
 	
 	//FMSREPT - fmsrept의 fms_sys를 distinct로 중복을 제거하여 목록 출력 // fbbsAdminSla.jsp, ...
-	public ArrayList<String> getDistSys() {
+	public ArrayList<String> getDistSys(String user_id) {
 		ArrayList<String> list = new ArrayList<String>();
 		String SQL = "select distinct(fms_sys) from fmsrept"; 
+		if(user_id != null && !user_id.equals("")) {
+			SQL += " where user_id='"+user_id+"' order by 1";
+		}
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
 			rs = pstmt.executeQuery(); //select
