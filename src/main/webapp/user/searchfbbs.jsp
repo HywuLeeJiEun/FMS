@@ -1,3 +1,4 @@
+<%@page import="net.sf.jasperreports.web.actions.SearchAction"%>
 <%@page import="fmsrept.fmsrept"%>
 <%@page import="fmsuser.fmsuser"%>
 <%@page import="fmsrept.FmsreptDAO"%>
@@ -68,6 +69,15 @@
 		//검색을 위한 설정
 		String category = request.getParameter("searchField");
 		String str = request.getParameter("searchText");
+	
+		// All 선택시, fbbs로 돌아갑니다. 
+		if(category.equals("fms_sys") && str.equals("All")) {
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("location.href='/FMS/user/fbbs.jsp'");
+			script.println("</script>");
+		}
+		
 		if(category == null || str == null || str.equals("") || str.isEmpty()) {
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
@@ -76,7 +86,6 @@
 			script.println("</script>");
 		}
 		
-
 	// 검색 결과 조회	
 	//기존 데이터 불러오기 (가장 최근에 작성된 fms 조회)
 	ArrayList<fmsrept> list = fms.getSearchfms(id, category, str, pageNumber);
@@ -98,14 +107,10 @@
 	// 시스템 출력을 위한 목록 불러오기 (유저가 작성한 장애보고 중, 시스템 목록)
 	ArrayList<String> syslist = fms.getDistSys(id);
 	
-	String option = "기타";
-	if(syslist.size() != 0) {
-		option = syslist.get(0);
-	}
+	String option = "All";
 			
 	
 	%>
-
 	<!-- nav바 불러오기 -->
     <jsp:include page="../Nav.jsp"></jsp:include>
 	<!-- ***********검색바 추가 ************* -->
@@ -131,6 +136,7 @@
 							placeholder="검색어 입력" name="searchText" id="searchText" maxlength="100" value="<%=  str %>">
 							<select class="form-control" name="searchSys" id="searchSys" style="margin-right:10px; display:block;" onchange="ChangeSys()">
 								<!-- 시스템 목록 출력 -->
+								<option>All</option>
 								<%
 								if(syslist.size() != 0) {
 									for(int i=0; i < syslist.size(); i++) {
