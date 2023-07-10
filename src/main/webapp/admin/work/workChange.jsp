@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="../../css/css/bootstrap.css">
 <link rel="stylesheet" href="../../css/index.css">
 
-<title>FMS</title>
+<title>IMS</title>
 </head>
 
 
@@ -243,14 +243,14 @@
 	<!-- 게시판 메인 페이지 영역 시작 -->
 	<div class="container">
 		<div class="row">
-			<form method="post" name="search" action="/RMS/admin/work/workChangesearch.jsp">
+			<form method="post" name="search" action="/FMS/admin/work/workChangesearch.jsp">
 				<table class="pull-left">
 					<tr>
 					<td><i class="glyphicon glyphicon-triangle-right" id="icon"  style="left:5px;"></i>&nbsp; <b>담당자</b> &nbsp;</td>
 						<td><select class="form-control" name="searchField" id="searchField" onchange="if(this.value) location.href=(this.value);">
 							<option><%= userDAO.getName(user_id) %></option>
 							<% for(int i=0; i < fuser.size(); i++) {%>
-								<option value="/RMS/admin/work/workChangesearch.jsp?user_id=<%= fuser.get(i) %>"><%= userDAO.getName(fuser.get(i)) %></option>
+								<option value="/FMS/admin/work/workChangesearch.jsp?user_id=<%= fuser.get(i) %>"><%= userDAO.getName(fuser.get(i)) %></option>
 							<% } %>
 							</select></td>
 					</tr>
@@ -304,8 +304,8 @@
 	
 								%>
 								<tr>
-									<td colspan="1" style="text-align:center;"><input type=text name="<%= i %>" style="border:0; width:50%; text-align:center" readonly value="<%= works.get(i) %>"></td>
-									<td colspan="1"><a type="submit" style="margin-right:50%;border:none" class="btn btn-danger pull-left" href="/RMS/admin/action/workDeleteAction.jsp?work=<%= works.get(i) %>&user_id=<%= id %>" >삭제</a></td>
+									<td colspan="1" style="text-align:center;"><input type=text name="<%= i %>" style="border:0; width:50%; text-align:center" readonly value="<%= works.get(i).replaceAll("./","") %>"></td>
+									<td colspan="1"><a type="submit" style="margin-right:50%;border:none" class="btn btn-danger pull-left" href="/FMS/admin/action/workDeleteAction.jsp?work=<%= works.get(i) %>&user_id=<%= id %>" >삭제</a></td>
 								</tr>
 								<%
 										} if (works.size() == 10) {
@@ -326,7 +326,7 @@
 			</div>
 			
 			<div class="align-slef-start" style="display:inline-block; width:45%;">
-				<form method="post" action="/RMS/admin/action/workAction.jsp?user_id=<%= user_id %>">
+				<form method="post" action="/FMS/admin/action/workAction.jsp?user_id=<%= user_id %>">
 					<table class="table" style="text-align: center; border: 1px solid #dddddd">
 						<tr>
 							<th colspan="2" style="text-align:center"><input type=text style="border:0; width:15%; text-align:right" readonly value="<%= userDAO.getName(id) %>">(님) 업무관리</th>

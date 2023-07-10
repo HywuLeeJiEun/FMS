@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>FMS</title>
+<title>IMS</title>
 </head>
 <body>
 	<%

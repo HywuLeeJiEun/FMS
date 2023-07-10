@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="../../css/css/bootstrap.css">
 <link rel="stylesheet" href="../../css/index.css">
 
-<title>FMS</title>
+<title>IMS</title>
 </head>
 
 
@@ -52,7 +52,7 @@
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert('대상자가 없습니다. 사원의 이름을 확인해주십시오.')");
-			script.println("location.href='/RMS/admin/work/workChange.jsp'");
+			script.println("location.href='/FMS/admin/work/workChange.jsp'");
 			script.println("</script>");
 		}
 		//str이 user 목록에 있는지 확인.
@@ -60,7 +60,7 @@
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert('대상자가 없습니다. 사원의 이름을 확인해주십시오.')");
-			script.println("location.href='/RMS/admin/work/workChange.jsp'");
+			script.println("location.href='/FMS/admin/work/workChange.jsp'");
 			script.println("</script>");
 		} 
 	
@@ -276,14 +276,14 @@
 	<!-- 게시판 메인 페이지 영역 시작 -->
 	<div class="container">
 		<div class="row">
-			<form method="post" name="search" action="/RMS/admin/work/workChangesearch.jsp">
+			<form method="post" name="search" action="/FMS/admin/work/workChangesearch.jsp">
 				<table class="pull-left">
 					<tr>
 					<td><i class="glyphicon glyphicon-triangle-right" id="icon"  style="left:5px;"></i>&nbsp; <b>담당자</b> &nbsp;</td>
 						<td><select class="form-control" name="searchField" id="searchField" onchange="if(this.value) location.href=(this.value);">
 							<option><%= userDAO.getName(user_id) %></option>
 							<% for(int i=0; i < fuser.size(); i++) {%>
-								<option value="/RMS/admin/work/workChangesearch.jsp?user_id=<%= fuser.get(i) %>"><%= userDAO.getName(fuser.get(i)) %></option>
+								<option value="/FMS/admin/work/workChangesearch.jsp?user_id=<%= fuser.get(i) %>"><%= userDAO.getName(fuser.get(i)) %></option>
 							<% } %>
 							</select></td>
 					</tr>

@@ -12,7 +12,7 @@
 <!-- 화면 최적화 -->
 <!-- <meta name="viewport" content="width-device-width", initial-scale="1"> -->
 <!-- 루트 폴더에 부트스트랩을 참조하는 링크 -->
-<title>FMS</title>
+<title>IMS</title>
 </head>
 
 
@@ -48,7 +48,7 @@ if(id != null){
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="login.jsp">Fault Management System</a>
+			<a class="navbar-brand" href="login.jsp">Insident Management System</a>
 		</div>
 		
 		<!-- 게시판 제목 이름 옆에 나타나는 메뉴 영역 -->

@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="../css/css/bootstrap.css">
 <!-- // 폰트어썸 이미지 사용하기 -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<title>FMS</title>
+<title>IMS</title>
 <link href="../css/index.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -52,7 +52,7 @@
 		     <!-- FmsReportModal -->
 		     	<div class="modal-body">
 		     		<!-- YYYY - 년도 데이터 -->
-		     		<div class="row" id="year">
+		     		<div class="row">
 		     			<div class="col-md-12" style="visibility:hidden" >
 							<a type="button" class="close"></a>
 							<a type="button" class="close"></a>
@@ -60,11 +60,19 @@
 						<div class="col-md-2" style="visibility:hidden" >
 						</div>
 		     			<div class="col-md-8 form-outline">
-							<h5 style="text-align: center;" data-toggle="tooltip" data-placement="top" title="생성할 장애리포트의 장애 인지 일자 중, 'yyyy(년)' 데이터를 선택합니다.">기준 년도 선택 <i class="glyphicon glyphicon-info-sign"  style="left:5px;"></i></h5>
+							<h5 style="text-align: center;" data-toggle="tooltip" data-placement="top" title="생성할 장애리포트의 기준 일자 및 'yyyy(연도)' 데이터를 선택합니다.">기준 일자 선택 <i class="glyphicon glyphicon-info-sign"  style="left:5px;"></i></h5>
 							<table>
 								<tr>
 									<td>
-										<select required class="form-control" style="width:200px; text-align:center" id="year" onchange="SelectYear()">
+										<select required class="form-control" style="width:150px; text-align:center" id="fms_day" name="fms_day">
+											<option value="fms_rec">장애 인지 일자</option>
+											<option value="fms_str">장애 발생 일자</option>
+											<option value="fms_end">조치 완료 일자</option>
+										</select>
+									</td>
+									<td> <input style="visibility: hidden; width:50px"> </td>
+									<td>
+										<select required class="form-control" style="width:100px; text-align:center" id="year" onchange="SelectYear()">
 											<option value="">[선택]</option>
 										<% for(int i=0; i < recList.size(); i++) { %>
 												<option value="<%= recList.get(i) %>"><%= recList.get(i) %></option>
@@ -97,7 +105,7 @@
 		    		</div>
 		    		
 		    		<!-- MM - 월 데이터 -->
-		    		<div class="row" id="month">
+		    		<div class="row">
 		     			<div class="col-md-12" style="visibility:hidden" >
 							<a type="button" class="close"></a>
 							<a type="button" class="close"></a>
@@ -144,13 +152,14 @@
 	<script>
 	function AdminReportAction() {
 		var year = $("#year option:selected").val();
+		var fms_day = $("#fms_day option:selected").val();
 		var str_day = $("#str_day").val();
 		var end_day = $("#end_day").val();
 		if (year == null || year == "" || year.match("선택") != null) {
 			alert("기준일이 설정되지 않았습니다. 확인하여 주시길 바랍니다.");
 		} 
 		else {
-			location.href='/FMS/admin/action/fmsAdminReportAction.jsp?year='+year+'&str_day='+str_day+'&end_day='+end_day;
+			location.href='/FMS/admin/action/fmsAdminReportAction.jsp?year='+year+'&str_day='+str_day+'&end_day='+end_day+'&fms_day='+fms_day;
 			$('#FmsReportModal').modal('hide');
 		}	
 	}

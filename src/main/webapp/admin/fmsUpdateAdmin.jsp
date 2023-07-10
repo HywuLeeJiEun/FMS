@@ -30,7 +30,7 @@
 <link rel="stylesheet" href="../css/css/bootstrap.css">
 <!-- // 폰트어썸 이미지 사용하기 -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<title>FMS</title>
+<title>IMS</title>
 <link href="../css/index.css" rel="stylesheet" type="text/css">
 </head>
 

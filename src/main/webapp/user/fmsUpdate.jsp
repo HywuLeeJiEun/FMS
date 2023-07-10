@@ -31,7 +31,7 @@
 <link rel="stylesheet" href="../css/css/bootstrap.css">
 <!-- // 폰트어썸 이미지 사용하기 -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<title>FMS</title>
+<title>IMS</title>
 <link href="../css/index.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -256,11 +256,11 @@
 											 	<option <%= userDAO.getManager(flist.get(0).getFms_sys()).equals(nwo.trim())?"Selected":"" %>> <%= nwo.trim() %> </option>
 											 <%
 											 }
-											 if(!works.contains(flist.get(0).getFms_sys())) { // 시스템 목록에 없는 경우, - 기타 선택 후 작성한 경우임!
+											 if(!works.contains(flist.get(0).getFms_sys()) && !flist.get(0).getFms_sys().equals(userDAO.getManager("00"))) { // 시스템 목록에 없는 경우, - 기타 선택 후 작성한 경우임!
 											 %>
 											 <option  Selected value="<%= flist.get(0).getFms_sys() %>"><%= flist.get(0).getFms_sys() %></option>
 											<% } %>
-											<option value="<%= userDAO.getManager("00") %>"><%= userDAO.getManager("00") %></option>
+											<option  <%= flist.get(0).getFms_sys().equals(userDAO.getManager("00"))?"Selected":"" %> value="<%= userDAO.getManager("00") %>"><%= userDAO.getManager("00") %></option>
 									</select>
 									<div><input id="sys_val" placeholder="장애시스템 작성" style="display:none; margin-top:10px; width:120px; height:40px; text-align-last:center;"></input></div>
 								</th>

@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class FmsreptDAO {
@@ -594,6 +593,25 @@ public class FmsreptDAO {
 		}
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			rs = pstmt.executeQuery(); //select
+			while(rs.next()) {
+				list.add(rs.getString(1));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	
+	//FMSREPT - fmsrept의 요약내용 불러오기 // migration/migration_excel.jsp
+	public ArrayList<String> getFmscon(String user_id) {
+		ArrayList<String> list = new ArrayList<String>();
+		String SQL = "select fms_con from fmsrept where user_id = ?"; 
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, user_id);
 			rs = pstmt.executeQuery(); //select
 			while(rs.next()) {
 				list.add(rs.getString(1));

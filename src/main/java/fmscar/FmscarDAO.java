@@ -6,8 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import fmsrept.fmsrept;
-
 public class FmscarDAO {
 	private Connection conn; //자바와 데이터베이스를 연결
 	private ResultSet rs; //결과값 저장
@@ -158,4 +156,22 @@ public class FmscarDAO {
 		}
 		return list;
 	}
+	
+	
+	//FMSCAR - 가중치 값 환산하기 // migration/migration_excel.jsp
+		public int getWgt(String fms_acd, String fms_bcd, String fms_ccd) {
+			String sql = "select a.acd_wgt * b.bcd_wgt * c.ccd_wgt from fmscara a, fmscarb b, fmscarc c where a.fms_acd ='"+fms_acd+"' and b.fms_bcd ='"+fms_bcd+"' and c.fms_ccd ='"+fms_ccd+"'";
+			try {
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				rs = pstmt.executeQuery();
+				// 이때, 생성된 자료가 없다면 01, 있다면 count 개수 + 1
+				if(rs.next()) {
+					return rs.getInt(1);
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			return -1;
+		}
 }
