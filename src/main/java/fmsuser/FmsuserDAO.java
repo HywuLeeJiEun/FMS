@@ -36,7 +36,7 @@ public class FmsuserDAO {
 	//로그인 영역
 	public int login(String user_id, String user_pwd) {
 		// DB에서 사용될 sql
-		String sql = "select user_pwd from fmsuser where user_id = ?";
+		String sql = "select user_pwd from rms.rmsuser where user_id = ?";
 		try {
 			pstmt = conn.prepareStatement(sql); //sql쿼리문을 대기
 			pstmt.setString(1, user_id); //첫번째 '?'에 매개변수로 받아온 'userID'를 대입
@@ -57,7 +57,7 @@ public class FmsuserDAO {
 	
 	//fmsuser - 모달 업데이트 (update) // ModalUpdateAction.jsp
 	public int UpdateUser(String password, String name, String email, String user_id) {
-		String sql = "update fmsuser set user_pwd=?,user_name=?,user_em=? where user_id=?";
+		String sql = "update rms.rmsuser set user_pwd=?,user_name=?,user_em=? where user_id=?";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, password);
@@ -74,7 +74,7 @@ public class FmsuserDAO {
 	
 	//아이디를 통해 사용자 정보 가져오기 (fmsuser 테이블 조회)
 	public ArrayList<fmsuser> getUser(String user_id) {
-		String sql = "select * from fmsuser where user_id=?";
+		String sql = "select * from rms.rmsuser where user_id=?";
 		ArrayList<fmsuser> list = new ArrayList<fmsuser>();
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -100,7 +100,7 @@ public class FmsuserDAO {
 	
 	//name을 출력한다. (성함) USER_NAME
 	public String getName(String user_id) {
-		String sql = "select user_name from fmsuser where user_id = ?";
+		String sql = "select user_name from rms.rmsuser where user_id = ?";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, user_id); //첫번째 '?'에 매개변수로 받아온 'userID'를 대입
@@ -117,7 +117,7 @@ public class FmsuserDAO {
 	
 	//id을 출력한다. (아이디) user_id
 	public String getId(String user_name) {
-		String sql = "select user_id from fmsuser where user_name = ?";
+		String sql = "select user_id from rms.rmsuser where user_name = ?";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, user_name); //첫번째 '?'에 매개변수로 받아온 'userID'를 대입
@@ -134,7 +134,7 @@ public class FmsuserDAO {
 	
 	//rank를 출력한다 (직급) USER_RK
 	public String getRank(String user_id) {
-	String sql = "select user_rk from fmsuser where user_id = ?";
+	String sql = "select user_rk from rms.rmsuser where user_id = ?";
 	try {
 	PreparedStatement pstmt = conn.prepareStatement(sql);
 	pstmt.setString(1, user_id); //첫번째 '?'에 매개변수로 받아온 'userID'를 대입
@@ -154,7 +154,7 @@ public class FmsuserDAO {
 	
 	//fmsMGRS(사용자 담당 업무)에 접근하여 업무 number를 조회한다.
 	public ArrayList<String> getCode(String user_id) {
-		String sql = "select task_num from fmsmgrs where user_id = ?";
+		String sql = "select task_num from rms.rmsmgrs where user_id = ?";
 		ArrayList<String> list = new ArrayList<String>();
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -172,7 +172,7 @@ public class FmsuserDAO {
 	
 	//fmsTASK(담당 업무 코드)에 접근하여 사용자의 담당 업무명을 알아낸다.
 	public String getManager(String task_num) {
-		String sql = "select task_wk from fmstask where task_num = ?";
+		String sql = "select task_wk from rms.rmstask where task_num = ?";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, task_num); //첫번째 '?'에 매개변수로 받아온 'userID'를 대입
@@ -189,7 +189,7 @@ public class FmsuserDAO {
 	
 	//fmsTASK(담당 업무 코드)에 접근하여 사용자의 담당 업무명을 알아낸다.
 	public String getTaskNum(String task_wk) {
-		String sql = "select task_num from fmstask where task_wk = ?";
+		String sql = "select task_num from rms.rmstask where task_wk = ?";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, task_wk);
@@ -206,7 +206,7 @@ public class FmsuserDAO {
 	
 	//fmsMGRS - 업무 확인하기 - workAction.jsp ...
 	public int getMgrs(String user_id, String task_num) {
-		String sql = "select * from fmsmgrs where user_id = ? and task_num = ?";
+		String sql = "select * from rms.rmsmgrs where user_id = ? and task_num = ?";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, user_id);
@@ -224,7 +224,7 @@ public class FmsuserDAO {
 	
 	//fmsMGRS - 업무 추가(insert)하기 - workAction.jsp ...
 	public int inMgrs(String user_id, String task_num) {
-		String sql = "insert into fmsmgrs values(?,?)";
+		String sql = "insert into rms.rmsmgrs values(?,?)";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, user_id);
@@ -239,7 +239,7 @@ public class FmsuserDAO {
 	
 	//fmsMGRS - 업무 삭제(Delete)하기 - workDeleteActionSh.jsp ...
 	public int delMgrs(String user_id, String task_num) {
-		String sql = "delete from fmsmgrs where user_id=? and task_num=?";
+		String sql = "delete from rms.rmsmgrs where user_id=? and task_num=?";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, user_id);
@@ -254,7 +254,7 @@ public class FmsuserDAO {
 	
 	//fmsMGRS - 담당 업무 개수 세기(count) - workAction.jsp
 	public int getCountMgrs(String user_id) {
-	String sql = "select count(task_num) from fmsmgrs where user_id=?";
+	String sql = "select count(task_num) from rms.rmsmgrs where user_id=?";
 	try {
 	PreparedStatement pstmt = conn.prepareStatement(sql);
 	pstmt.setString(1, user_id);
@@ -271,7 +271,7 @@ public class FmsuserDAO {
 	
 	//fmsTASK 모든 업무 가져오기
 	public ArrayList<String> getManagerAll() {
-		String sql = "select task_wk from fmstask";
+		String sql = "select task_wk from rms.rmstask";
 			ArrayList<String> list = new ArrayList<String>();
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -288,7 +288,7 @@ public class FmsuserDAO {
 	
 	//fmsuser 담당 분야 가져오기 (user_fd)
 	public String getFD(String user_id){
-		String sql =  "select user_fd from fmsuser where user_id=?";
+		String sql =  "select user_fd from rms.rmsuser where user_id=?";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, user_id);
@@ -306,7 +306,7 @@ public class FmsuserDAO {
 	//fmsuser USER_FD(Field) 사용자 담당 분야별로 검색하여 user_id 도출
 	public ArrayList<String> getpluser(String user_fd){
 		//String sql =  "select * from pluser where work=?";
-		String sql =  "select user_id from fmsuser where user_fd=? order by user_name";
+		String sql =  "select user_id from rms.rmsuser where user_fd=? order by user_name";
 				ArrayList<String> list = new ArrayList<String>();
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -324,7 +324,7 @@ public class FmsuserDAO {
 	
 	//fmsTASK 담당 업무명에 대한 업무 코드 알아보기
 	public String getTask(String task_wk){
-		String sql =  "select task_num from fmstask where task_wk like '%"+task_wk.trim()+"%'";
+		String sql =  "select task_num from rms.rmstask where task_wk like '%"+task_wk.trim()+"%'";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -340,7 +340,7 @@ public class FmsuserDAO {
 	
 	//fmsTASK 담당 업무명에 대한 업무 코드 알아보기
 	public String getMgrs(String task_num){
-		String sql =  "select user_id from fmsmgrs where task_num=?";
+		String sql =  "select user_id from rms.rmsmgrs where task_num=?";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, task_num);
@@ -357,7 +357,7 @@ public class FmsuserDAO {
 	
 	//fmsuser - user_fd로 검색하여 user_id 가져오기
 	public ArrayList<String> getidFD(String user_fd) {
-		String sql = "select user_id from fmsuser where user_fd=?";
+		String sql = "select user_id from rms.rmsuser where user_fd=?";
 			ArrayList<String> list = new ArrayList<String>();
 			try {
 				PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -375,7 +375,7 @@ public class FmsuserDAO {
 	
 	//fmsuser - user_id 모두 가져오기 - workChange.jsp
 	public ArrayList<String> getidfull() {
-		String sql = "select if(user_fd ='미정', user_fd, user_id) from fmsuser order by user_name asc";
+		String sql = "select if(user_fd ='미정', user_fd, user_id) from rms.rmsuser order by user_name asc";
 			ArrayList<String> list = new ArrayList<String>();
 			try {
 				PreparedStatement pstmt = conn.prepareStatement(sql);
