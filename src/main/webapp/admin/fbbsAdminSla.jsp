@@ -96,8 +96,8 @@
 			<thead>
 				<tr>
 					<th style=" text-align: left" data-toggle="tooltip" data-html="true" data-placement="bottom" title=""> 
-					<br><i class="glyphicon glyphicon-triangle-right" id="icon"  style="left:5px;"></i> 주간보고 목록 (관리자)
-					<br><h6>: '승인'된 장애 보고를 확인 및 출력할 수 있습니다.</h6>
+					<br><i class="glyphicon glyphicon-triangle-right" id="icon"  style="left:5px;"></i> 승인된 장애보고 목록 (관리자)
+					<br><h6>: '승인'된 장애 보고를 확인 및 출력(SLA 여부에 따라 개별 출력)할 수 있습니다.</h6>
 				</th>
 				</tr>
 			</thead>
@@ -105,6 +105,9 @@
 			<form method="post" name="search" action="/FMS/admin/searchfbbsAdminSla.jsp">
 			<div style="width:50%; display:flex; flex-direction:column; float:right">
 				<table>
+					<tr>
+						<td colspan="5"><h5>조건 검색을 통해 [장애리포트]를 출력할 수 있습니다.</h5></td>
+					</tr>
 					<!-- 기준일자 선택 (시작일 - 기준 끝일) -->
 					<tr>
 						<td style="margin-right:10px">
@@ -133,9 +136,10 @@
 							</select>
 						</td>
 						<td><input type="hidden" class="form-control" style="margin-right:10px"
-							placeholder="검색어 입력" name="searchText" id="searchText" maxlength="100" value="Y">
+							placeholder="검색어 입력" name="searchText" id="searchText" maxlength="100" value="All">
 							<select class="form-control" name="searchSys" id="searchSys" style="margin-right:10px; display:none;" onchange="ChangeSys()">
 								<!-- 시스템 목록 출력 -->
+									<option>All</option>
 								<%
 									ArrayList<String> syslist = fms.getDistSys(null);
 								
@@ -146,11 +150,12 @@
 							</select>
 							<select class="form-control" name="searchSla" id="searchSla" style="margin-right:10px; display:block;" onchange="ChangeSla()">
 								<!--  SLA 여부 -->
+								<option>All</option>
 								<option>Y</option>
 								<option>N</option>
 							</select>
 						</td>
-						<td><button type="submit" style="margin:5px" class="btn btn-success" style="margin-left:10px">검색</button></td>
+						<td><button type="submit" style="margin:5px" class="btn btn-success" style="margin-left:10px">검색</button></td>		
 					</tr>
 				</table>
 				</div>
@@ -226,6 +231,9 @@
 			<%
 				}
 			%>
+			<!-- 출력 버튼 생성 -->
+			<a href="/RMS/user/bbsUpdate.jsp" class="btn btn-info pull-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="주간보고 작성">작성</a>
+			<button class="btn btn-success pull-right" onclick="rmsModalAction()" style="margin-right:20px" data-toggle="tooltip" data-html="true" data-placement="bottom" title="설정된 기준에 따라, [장애리포트]를 출력합니다.">출력</button>
 		</div>
 	</div>
 	
@@ -289,7 +297,7 @@
 	
     <!-- 보고 개수에 따라 버튼 노출 (list.size()) -->
 	<script>
-	var trCnt = $('#bbsTable tr').length; 
+	var trCnt = $('#FmsTable tr').length; 
 	
 	if(trCnt < 11) {
 		$('#next').hide();

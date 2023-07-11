@@ -34,7 +34,7 @@
 		
 		// 메인 페이지로 이동했을 때 세션에 값이 담겨있는지 체크
 		String id = null;
-		if((String) request.getSession().getServletContext().getContext("/RMS").getAttribute("id") != null) {
+		/* if((String) request.getSession().getServletContext().getContext("/RMS").getAttribute("id") != null) {
 			id = (String) request.getSession().getServletContext().getContext("/RMS").getAttribute("id");
 			session.setAttribute("id", id);
 		} else if ((String) request.getSession().getServletContext().getContext("/RMS").getAttribute("id") == null){
@@ -42,6 +42,12 @@
 			id = null;
 			session.invalidate();
 		}else if(session.getAttribute("id") != null){
+			id = (String)session.getAttribute("id");
+		} */
+		if(request.getParameter("user_id") != null) {
+			id = request.getParameter("user_id");
+			session.setAttribute("id", id);
+		} else if(session.getAttribute("id") != null){
 			id = (String)session.getAttribute("id");
 		}
 		

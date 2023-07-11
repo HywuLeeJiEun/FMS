@@ -75,12 +75,12 @@
 		
 		
 		
-		// fms_sig = "제출"인 장애 보고 목록을 조회
+		// fms_sig = "제출"인 장애 보고 목록을 조회 (X), '미승인'건에 대한 처리도 필요함!
 		//기존 데이터 불러오기 (가장 최근에 작성된 fms 조회)
-		ArrayList<fmsrept> list = fms.getAdminfms("제출", pageNumber);
+		ArrayList<fmsrept> list = fms.getAdminfms("All", pageNumber);
 		
 		// 다음 페이지가 있는지 확인!
-		ArrayList<fmsrept> aflist = fms.getAdminfms("제출", pageNumber+1);
+		ArrayList<fmsrept> aflist = fms.getAdminfms("All", pageNumber+1);
 		
 	
 	%>
@@ -102,6 +102,61 @@
 				</tr>
 			</thead>
 			</table>
+			<form method="post" name="search" action="/FMS/admin/searchfbbsAdmin.jsp">
+			<div style="width:50%; display:flex; flex-direction:column; float:right">
+				<table>
+					<!-- 기준일자 선택 (시작일 - 기준 끝일) -->
+					<tr>
+						<td style="margin-right:10px">
+							<select style="width:95%" class="form-control" name="dayField" id="dayField" onchange="ChangeValueOfDay()">
+								<option value="fms_rec">장애 인지 일자</option>
+								<option value="fms_doc">보고 작성 일자</option>
+								<option value="fms_str">장애 발생 일자</option>
+								<option value="fms_end">조치 완료 일자</option>
+							</select>
+						</td>
+						<td><input type="date" class="form-control" name="str_day" style="margin-right:10px" ></td>
+						<td> ~ </td> 
+						<td><input type="date" class="form-control" name="end_day" style="margin-left:10px;" ></td>
+					</tr>
+				</table>
+				
+				<table>
+					<!-- 검색어 입력 -->
+					<tr>
+						<td>
+							<select style="width:90%" class="form-control" name="searchField" id="searchField" onchange="ChangeValue()">
+								<option value="fms_sig">상태</option>
+								<option value="fms_con">장애 내용</option>
+								<option value="fms_sys">시스템</option>
+								<option value="user_id">작성자</option>
+							</select>
+						</td>
+						<td><input type="hidden" class="form-control" style="margin-right:10px"
+							placeholder="검색어 입력" name="searchText" id="searchText" maxlength="100" value="All">
+							<select class="form-control" name="searchSys" id="searchSys" style="margin-right:10px; display:none;" onchange="ChangeSys()">
+								<!-- 시스템 목록 출력 -->
+									<option>All</option>
+								<%
+									ArrayList<String> syslist = fms.getDistSys(null);
+								
+									for(int i=0; i < syslist.size(); i++) {
+								%>
+									<option><%= syslist.get(i) %></option>
+								<% } %>
+							</select>
+							<select class="form-control" name="searchSig" id="searchSig" style="margin-right:10px; display:block;" onchange="ChangeSig()">
+								<!--  승인 상태 -->
+								<option>All</option>
+								<option>미제출</option>
+								<option>제출</option>
+							</select>
+						</td>
+						<td><button type="submit" style="margin:5px" class="btn btn-success" style="margin-left:10px">검색</button></td>
+					</tr>
+				</table>
+				</div>
+			</form>
 		</div>
 	</div>
 	<br>
@@ -120,6 +175,7 @@
 						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(3)">심각도<input type="hidden" readonly id="3" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
 						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(4)">점수<input type="hidden" readonly id="4" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
 						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(5)">장애 인지 일자<input id="5" readonly style="border:none; width:18px; background-color:transparent;" value="▽"></input> </th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(6)">상태<input type="hidden" readonly id="6" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
 					</tr>
 				</thead>
 				<%
@@ -128,6 +184,10 @@
 				<tbody>
 					<%
 						for(int i = 0; i < list.size(); i++){
+							String sig = list.get(i).getFms_sig();
+							if(sig.equals("저장")) {
+								sig = "미제출";
+							}
 					%>
 						<!-- 게시글 제목을 누르면 해당 글을 볼 수 있도록 링크를 걸어둔다 -->
 					<tr>
@@ -145,13 +205,15 @@
 						<td><%= list.get(i).getFms_sco() %>점</td>
 						<!-- (6) 장애 인지 일자-->
 						<td><%= list.get(i).getFms_rec() %></td>
+						<!--  (7) 제출 여부 -->
+						<td><%= sig %></td>
 					</tr>
 					<%
 						}
 					%>
 				</tbody>
 				<% } else { %>
-					<tbody><tr><th colspan="7" style="text-align: center; border: 1px solid #dddddd;">미승인된 장애 보고가 없습니다.<br><br>승인된 목록은 <a href="/FMS/admin/fbbsAdminSla.jsp">[SLA]</a> 조회에서 확인 가능합니다.</th></tr></tbody>
+					<tbody><tr><th colspan="7" style="text-align: center; border: 1px solid #dddddd;">제출 및 미제출된 장애 보고가 없습니다.<br><br>승인된 장애보고 목록은 <a href="/FMS/admin/fbbsAdminSla.jsp">[SLA]</a> 조회에서 확인 가능합니다.</th></tr></tbody>
 				<% } %>
 			</table>
 			
@@ -181,18 +243,57 @@
 	<script src="../css/js/bootstrap.js"></script>
 	<script src="../modalFunction.js"></script>
 	
-
-	
 	<script>
-		function ChangeValue() {
-			var value_str = document.getElementById('searchField');
+	function ChangeValue() {
+		var value_str = document.getElementById('searchField');
+		
+		if(value_str.value == "fms_sys") {
+			$("#searchText").attr('type','hidden'); //텍스트 필드가 보이지 않도록 수정합니다.
+			$("#searchSig").css('display', 'none'); 
+			$("#searchSys").css('display', 'block'); //선택 상자 출력
 			
+			// 값 변경
+			$("#searchText").attr('value',$("#searchSys").val());
+
+			
+		} else if(value_str.value == "fms_sig) { 
+			$("#searchText").attr('type','hidden'); //텍스트 필드가 보이지 않도록 수정합니다.
+			$("#searchSys").css('display', 'none'); 
+			$("#searchSig").css('display', 'block'); //선택 상자 출력
+			
+			// 값 변경
+			$("#searchText").attr('value',$("#searchSig").val());	
+		}else {
+			$("#searchText").attr('type','text'); 
+			$("#searchSig").css('display', 'none'); 
+			$("#searchSys").css('display', 'none');
+			
+			// 값 변경
+			$("#searchText").attr('value', "");
 		}
-	</script>
+		
+	}
 	
-    <!-- 보고 개수에 따라 버튼 노출 (list.size()) -->
+	function ChangeValueOfDay() {
+		var value_str = document.getElementById('dayField');
+	}
+	
+	function ChangeSys() {
+		var value_str = document.getElementById('searchSys');
+		// 값 변경
+		$("#searchText").attr('value',value_str.value);
+	}
+	
+	function ChangeSig() {
+		var value_str = document.getElementById('searchSig');
+		// 값 변경
+		$("#searchText").attr('value',value_str.value);
+	}
+	</script>
+
+   <!-- 보고 개수에 따라 버튼 노출 (list.size()) -->
 	<script>
-	var trCnt = $('#bbsTable tr').length; 
+	var trCnt = $('#FmsTable tr').length; 
 	
 	if(trCnt < 11) {
 		$('#next').hide();

@@ -117,11 +117,21 @@ public class FmsreptDAO {
 	//FMSREPT - (관리자) fms_sig = '제출'인 경우 또는 '승인'인 모든 경우 조회하기 (+ pageNumber) // fbbsAdmin.jsp('제출'), fbbsAdminSla.jsp('승인')
 	public ArrayList<fmsrept> getAdminfms(String fms_sig, int pageNumber) {
 		ArrayList<fmsrept> list = new ArrayList<fmsrept>();
-		String SQL = "select fmsr_cd ,user_id, fms_con, fms_rec, fms_sco, fms_sev, fms_sys, fms_sla, fms_sig, fms_upa from fmsrept where fms_sig=? order by fms_rec desc limit ?,10";
+		String SQL = "select fmsr_cd ,user_id, fms_con, fms_rec, fms_sco, fms_sev, fms_sys, fms_sla, fms_sig, fms_upa from fmsrept where ";
+				if(fms_sig.equals("All")) {
+					//승인 이외의 '제출', '미제출'건 확인
+					SQL += "fms_sig='제출' or fms_sig='저장' order by fms_rec desc limit ?,10";
+				} else {
+				SQL += "fms_sig=? order by fms_rec desc limit ?,10";
+				}
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
-			pstmt.setString(1, fms_sig);
-			pstmt.setInt(2, (pageNumber-1) * 10);
+			if(fms_sig.equals("All")) {
+				pstmt.setInt(1, (pageNumber-1) * 10);
+			} else {
+				pstmt.setString(1, fms_sig);
+				pstmt.setInt(2, (pageNumber-1) * 10);
+			}
 			rs = pstmt.executeQuery(); //select
 			while(rs.next()) {
 				fmsrept fms = new fmsrept();
@@ -145,14 +155,21 @@ public class FmsreptDAO {
 	}
 		
 	
-	//FMSREPT - 사용자(User_id) 기준으로 조회하기 / 조건을 추가하여 검색 (+ pageNumber) // searchfbbsAdminSla.jsp
+	//FMSREPT - 사용자(User_id) 기준으로 조회하기 / 조건을 추가하여 검색 (+ pageNumber) // searchfbbsAdmin.jsp, searchfbbsAdminSla.jsp
 	public ArrayList<fmsrept> getSearchfmsAdmin(String fms_sig, String searchField, String searchText, int pageNumber, String str_day, String end_day, String dayField) {
 		ArrayList<fmsrept> list = new ArrayList<fmsrept>();
-		String SQL = "select fmsr_cd ,user_id, fms_doc, fms_con, fms_str, fms_end, fms_rec, fms_sco, fms_sev, fms_sys, fms_sla, fms_sig, fms_upa from"
-				+ "(select * from fmsrept where fms_sig=?) r ";
+		String SQL = "select fmsr_cd ,user_id, fms_doc, fms_con, fms_str, fms_end, fms_rec, fms_sco, fms_sev, fms_sys, fms_sla, fms_sig, fms_upa from ";
 				
+		if(fms_sig.equals("All")) {
+			// 승인을 제외한 '저장', '제출' 상태를 표시
+			SQL += "(select * from fmsrept where fms_sig!='승인') r ";
+		} else {
+			// 특정 상태 표시 
+			SQL += "(select * from fmsrept where fms_sig='"+fms_sig.trim()+"') r ";
+		}
+		
 		try {
-			if(searchText != null && !searchText.equals("")) {
+			if(searchText != null && !searchText.equals("") && !searchField.equals("fms_sig")) {
 				SQL += " where " + searchField.trim();
 				SQL += " LIKE '%"+searchText.trim()+"%' ";
 				if(str_day != null || end_day !=  null) {
@@ -190,10 +207,8 @@ public class FmsreptDAO {
 				SQL += "("+dayField+" between '"+str_day.trim()+"' and '"+end_day.trim()+"') "; //" (fms_rec <= '"+end_day.trim()+"') ";
 			}
 			SQL += " order by "+dayField+" desc limit ?,10";
-			//System.out.println(SQL);
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
-			pstmt.setString(1, fms_sig);
-			pstmt.setInt(2, (pageNumber-1) * 10);
+			pstmt.setInt(1, (pageNumber-1) * 10);
 			rs = pstmt.executeQuery(); //select
 			while(rs.next()) {
 				fmsrept fms = new fmsrept();
@@ -411,7 +426,101 @@ public class FmsreptDAO {
 	}
 	
 	
-	//FMSREPT - <Excel출력> 인지일자(fms_rec)를 기준으로 '년도-월-일' 기준 데이터 찾기  // fmsExcelAction.jsp
+	//FMSREPT - !! <Excel출력> 인지일자(fms_rec)를 기준으로 '년도-월-일' 기준 데이터 찾기  // fmsExcelAction.jsp << 2023-07-11 이후 적용 버전 >> !!
+	public ArrayList<fmsrept> getExcelfmsSet(String fms_sig, String searchField, String searchText, String str_day, String end_day, String dayField) {
+		ArrayList<fmsrept> list = new ArrayList<fmsrept>();
+		String SQL = "select * from ";
+		if(fms_sig.equals("All")) {
+			// 승인을 제외한 '저장', '제출' 상태를 표시
+			SQL += "(select * from fmsrept where fms_sig!='승인') r ";
+		} else {
+			// 특정 상태 표시 
+			SQL += "(select * from fmsrept where fms_sig='"+fms_sig.trim()+"') r ";
+		}
+		
+		try {
+			if(searchText != null && !searchText.equals("") && !searchField.equals("fms_sig")) {
+				SQL += " where " + searchField.trim();
+				SQL += " LIKE '%"+searchText.trim()+"%' ";
+				if(str_day != null || end_day !=  null) {
+					SQL += " and ";
+				}
+			} else { //검색 텍스트가 비어있다면,
+				// 텍스트 검색에 대한 조건은 입력하지 않는다.
+				if(str_day != null || end_day !=  null) {
+					SQL += " where "; // 조건이 없기에 조건 작성
+				}
+			}
+			
+			if(str_day != null && !str_day.equals("")) {
+				// 시작 기준일이 비어있지 않다면
+				if(end_day != null && !end_day.equals("")) {
+					// 끝 기준일이 비어있지 않다면 
+					//SQL += "(fms_rec between '"+str_day.trim()+"' and '"+end_day.trim()+"') "; // OK
+				} else {
+					// 끝 기준일이 비어있다면, (str만 비교)
+					end_day = "9999-12-31";
+				}
+			} else {
+				// 시작 기준일이 없는 경우,
+				if(end_day != null && !end_day.equals("")) {
+					str_day = "1900-01-01";
+				} else if(searchText != null && !searchText.equals("")) { // 데이터가 하나도 없는 경우!
+
+				}
+			}
+			//System.out.println(SQL);
+			
+			if(SQL.contains("between") || str_day.contains("1900-01-01") || str_day.equals(end_day)) {
+				SQL += " ("+dayField+" LIKE '"+end_day.trim()+"%')"; //end_day까지 포함하기
+			} else {
+				SQL += "("+dayField+" between '"+str_day.trim()+"' and '"+end_day.trim()+"') "; //" (fms_rec <= '"+end_day.trim()+"') ";
+			}
+			SQL += " order by "+dayField+" desc";
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			rs = pstmt.executeQuery(); //select
+			while(rs.next()) {
+				fmsrept fms = new fmsrept();
+				fms.setFmsr_cd(rs.getString(1));  // 구분 코드
+				fms.setUser_id(rs.getString(2));  // 사용자 정보
+				fms.setFms_doc(rs.getString(3));  // 작성일
+				fms.setFms_con(rs.getString(4));  // 작성 내용
+				fms.setFms_str(rs.getString(5));  // 장애발생 일자
+				fms.setFms_end(rs.getString(6));  // 조치 완료 일자
+				fms.setFms_rec(rs.getString(7));  // 장애 인지 일자
+				fms.setFms_fov(rs.getString(8));  // 장애 시간
+				fms.setFms_acd(rs.getString(9));  // A코드
+				fms.setFms_bcd(rs.getString(10)); // B코드
+				fms.setFms_ccd(rs.getString(11)); // C코드
+				fms.setFms_sco(rs.getInt(12));    // 등급 표시 값
+				fms.setFms_sev(rs.getInt(13));    // 등급 표시
+				fms.setFms_rte(rs.getString(14)); // 장애 인지 경로
+				fms.setFms_dif(rs.getString(15)); // 장애 분야
+				fms.setFms_dcd(rs.getString(16)); // 중복 장애 여부
+				fms.setFms_sys(rs.getString(17)); // 장애 시스템(장애 발생 업무)
+				fms.setFms_dre(rs.getString(18)); // 향후 대책 총 내용
+				fms.setFms_drp(rs.getString(19)); // 향후 대책 중, 실행 계획
+				fms.setFms_sym(rs.getString(20)); // 장애 증상
+				fms.setFms_emr(rs.getString(21)); // 조치 내용 (긴급)
+				fms.setFms_dfu(rs.getString(22)); // 조치 사항 (후속)
+				fms.setFms_eff(rs.getString(23)); // 업무 영향
+				fms.setFms_cau(rs.getString(24)); // 장애 원인
+				fms.setFms_res(rs.getString(25)); // 장애 책임
+				fms.setFms_sla(rs.getString(26)); // SLA 대상여부
+				fms.setSla_rea(rs.getString(27)); // SLA 대상여부 '비해당'시, 사유
+				fms.setFms_sig(rs.getString(28)); // 승인 및 상태 확인
+				fms.setFms_upa(rs.getString(29)); // 수정일
+				list.add(fms);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		//System.out.println(SQL);
+		return list;
+	}
+	
+	//FMSREPT - <Excel출력> 인지일자(fms_rec)를 기준으로 '년도-월-일' 기준 데이터 찾기  // fmsExcelAction.jsp (구버전)
 	public ArrayList<fmsrept> getExcelfms(String fms_day, String str_day, String end_day) {
 		ArrayList<fmsrept> list = new ArrayList<fmsrept>();
 		String SQL = "select * from fmsrept where "+fms_day;

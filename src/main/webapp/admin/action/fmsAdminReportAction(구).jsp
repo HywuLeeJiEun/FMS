@@ -38,14 +38,12 @@
 </head>
 <body>
 <% 
-
-	String category = request.getParameter("category");
-	String strRe = request.getParameter("strRe");
+	String year = request.getParameter("year");
 	String str_day = request.getParameter("str_day");
 	String end_day = request.getParameter("end_day");
-	String fms_day = request.getParameter("dayField");
+	String fms_day = request.getParameter("fms_day");
 
-	if(category == null || strRe == null || str_day == null || end_day == null || fms_day == null) {
+	if(year == null || str_day == null || end_day == null || fms_day == null) {
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		script.println("alert('해당 범위의 데이터가 없습니다.')");
@@ -67,7 +65,7 @@
 	ArrayList<Integer> slist = new ArrayList<>();
 	
 	// year - 인지일자(FMS_REC)을 기준으로 데이터를 조회합니다.
-	ArrayList<fmsrept> list = fms.getExcelfmsSet("승인", category, strRe, str_day, end_day, fms_day);
+	ArrayList<fmsrept> list = fms.getExcelfms(fms_day,str_day, end_day);
 	//System.out.println(list.size());
 	
 	if(list.size() == 0) {
@@ -88,7 +86,6 @@
 		rec.add(10);
 		rec.add(11);
 		rec.add(12);
-		
 		// fms_rec을 수정해, 포함된 월을 계산합니다. (데이터가 있는 '월'은 rec에서 제거합니다.)
 		for(int i=0; i < list.size(); i++) {
 			if(fms_day.equals("fms_rec")) {

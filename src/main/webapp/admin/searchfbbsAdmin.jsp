@@ -73,6 +73,8 @@
 			script.println("</script>");
 		}
 		
+		
+		
 		String str_day = request.getParameter("str_day");
 		String end_day = request.getParameter("end_day");
 		String dayField = request.getParameter("dayField");
@@ -84,7 +86,7 @@
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert('입력된 데이터가 없습니다.')");
-			script.println("location.href='/FMS/admin/fbbsAdminSla.jsp'");
+			script.println("location.href='/FMS/admin/fbbsAdmin.jsp'");
 			script.println("</script>");
 		}
 		
@@ -98,34 +100,35 @@
 			strRe = "";
 		}
 		
+		String fsig = "All";
+		if(category.equals("fms_sig")) {
+			//fsig = str;
+			//표시는 str, fsig로 들어가는 값은 변경되어야 함!
+			if(str.equals("미제출")) {
+				fsig = "저장";
+			} else {
+				fsig = str;
+			}
+		}
+		
 		
 		// fms_sig = "제출"인 장애 보고 목록을 조회
 		//기존 데이터 불러오기 (가장 최근에 작성된 fms 조회)
-		ArrayList<fmsrept> list = fms.getSearchfmsAdmin("승인", category, strRe, pageNumber, str_day, end_day, dayField);
+		ArrayList<fmsrept> list = fms.getSearchfmsAdmin(fsig, category, strRe, pageNumber, str_day, end_day, dayField);
 		
 		// 다음 페이지가 있는지 확인!
-		ArrayList<fmsrept> aflist = fms.getSearchfmsAdmin("승인", category, strRe, pageNumber+1, str_day, end_day, dayField);
-		
-		
-		if(list.size() == 0){
-			PrintWriter script = response.getWriter();
-			script.println("<script>");
-			script.println("alert('검색 결과가 없습니다.')");
-			script.println("location.href='/FMS/admin/fbbsAdminSla.jsp'");
-			script.println("</script>");
-		} 
-		 
-
+		ArrayList<fmsrept> aflist = fms.getSearchfmsAdmin(fsig, category, strRe, pageNumber+1, str_day, end_day, dayField);
+	
 	%>
-
-	<textarea><%= category  %></textarea><br>
-	<textarea><%= strRe %></textarea><br>
-	<textarea><%= str_day %></textarea><br>
-	<textarea><%= end_day %></textarea><br>
-	<textarea><%= dayField %></textarea>
-
+	    
+	<textarea><%= category %></textarea><br>
+	<textarea><%= str %></textarea><br>   
+	<textarea><%= fsig %></textarea><br>
+	<textarea><%= list.size() %></textarea>
+	    
 	<!-- nav바 불러오기 -->
     <jsp:include page="../Nav.jsp"></jsp:include>
+	
 	
 	<!-- ***********검색바 추가 ************* -->
 	<div class="container">
@@ -134,46 +137,47 @@
 			<thead>
 				<tr>
 					<th style=" text-align: left" data-toggle="tooltip" data-html="true" data-placement="bottom" title=""> 
-					<br><i class="glyphicon glyphicon-triangle-right" id="icon"  style="left:5px;"></i> 승인된 장애보고 목록 (관리자)
-					<br><h6>: '승인'된 장애 보고를 확인 및 출력할 수 있습니다.</h6>
+					<br><i class="glyphicon glyphicon-triangle-right" id="icon"  style="left:5px;"></i> 장애보고 목록 (관리자)
+					<br><h6>: '제출'된 장애 보고를 확인 / 수정 및 승인할 수 있습니다.</h6>
 				</th>
 				</tr>
 			</thead>
 			</table>
-			<form method="post" name="search" action="/FMS/admin/searchfbbsAdminSla.jsp">
+			<form method="post" name="search" action="/FMS/admin/searchfbbsAdmin.jsp">
 			<div style="width:50%; display:flex; flex-direction:column; float:right">
 				<table>
 					<!-- 기준일자 선택 (시작일 - 기준 끝일) -->
-					<tr style="width:70%">
+					<tr>
 						<td style="margin-right:10px">
 							<select style="width:95%" class="form-control" name="dayField" id="dayField" onchange="ChangeValueOfDay()">
-								<option value="fms_rec" <%= dayField.equals("fms_rec") ? "selected":"" %>>장애 인지 일자</option>
-								<option value="fms_doc" <%= dayField.equals("fms_doc") ? "selected":"" %>>보고 작성 일자</option>
-								<option value="fms_str" <%= dayField.equals("fms_str") ? "selected":"" %>>장애 발생 일자</option>
-								<option value="fms_end" <%= dayField.equals("fms_end") ? "selected":"" %>>조치 완료 일자</option>
+								<option value="fms_rec">장애 인지 일자</option>
+								<option value="fms_doc">보고 작성 일자</option>
+								<option value="fms_str">장애 발생 일자</option>
+								<option value="fms_end">조치 완료 일자</option>
 							</select>
 						</td>
-						<td><input type="date" class="form-control" name="str_day" style="margin-right:10px" value="<%= str_day %>"></td>
+						<td><input type="date" class="form-control" name="str_day" style="margin-right:10px" ></td>
 						<td> ~ </td> 
-						<td><input type="date" class="form-control" name="end_day" style="margin-left:10px; margin-bottom:5px" value="<%= end_day %>"></td>
+						<td><input type="date" class="form-control" name="end_day" style="margin-left:10px;" ></td>
 					</tr>
 				</table>
+				
 				<table>
 					<!-- 검색어 입력 -->
 					<tr>
 						<td>
 							<select style="width:90%" class="form-control" name="searchField" id="searchField" onchange="ChangeValue()">
-								<option value="fms_sla" <%= category.equals("fms_sla") ? "selected":"" %>>SLA 여부</option>
-								<option value="fms_con" <%= category.equals("fms_con") ? "selected":"" %>>장애 내용</option>
-								<option value="fms_sys" <%= category.equals("fms_sys") ? "selected":"" %>>시스템</option>
-								<option value="user_id" <%= category.equals("user_id") ? "selected":"" %>>작성자</option>
+								<option value="fms_sig">상태</option>
+								<option value="fms_con">장애 내용</option>
+								<option value="fms_sys">시스템</option>
+								<option value="user_id">작성자</option>
 							</select>
 						</td>
 						<td><input type="hidden" class="form-control" style="margin-right:10px"
 							placeholder="검색어 입력" name="searchText" id="searchText" maxlength="100" value="<%= str %>">
 							<select class="form-control" name="searchSys" id="searchSys" style="margin-right:10px; display:none;" onchange="ChangeSys()">
 								<!-- 시스템 목록 출력 -->
-									<option>All</option>
+								<option>All</option>
 								<%
 									ArrayList<String> syslist = fms.getDistSys(null);
 								
@@ -182,11 +186,11 @@
 									<option><%= syslist.get(i) %></option>
 								<% } %>
 							</select>
-							<select class="form-control" name="searchSla" id="searchSla" style="margin-right:10px; display:block;" onchange="ChangeSla()">
-								<!--  SLA 여부 -->
+							<select class="form-control" name="searchSig" id="searchSig" style="margin-right:10px; display:block;" onchange="ChangeSig()">
+								<!--  승인 상태 -->
 								<option>All</option>
-								<option>Y</option>
-								<option>N</option>
+								<option>미제출</option>
+								<option>제출</option>
 							</select>
 						</td>
 						<td><button type="submit" style="margin:5px" class="btn btn-success" style="margin-left:10px">검색</button></td>
@@ -197,7 +201,6 @@
 		</div>
 	</div>
 	<br>
-	
 
 
 	<!-- 게시판 메인 페이지 영역 시작 -->
@@ -207,21 +210,13 @@
 				<thead>
 					<tr>
 						<!-- <th style="background-color: #eeeeee; text-align: center;">번호</th> -->
-						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(0)">시스템<br><input id="0" type="hidden" readonly  style="border:none; width:18px; background-color:transparent;" value=""></input></th>
-						<th style="width:50%; background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(1)">장애 내용<br><input id="1" type="hidden" readonly  style="border:none; width:18px; background-color:transparent;" value=""></input></th>
-						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(2)">작성자<br><input id="2" type="hidden" readonly  style="border:none; width:18px; background-color:transparent;" value=""></input></th>
-						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(3)">심각도<br><input id="3" type="hidden" readonly  style="border:none; width:18px; background-color:transparent;" value=""></input></th>
-						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(4)">점수<br><input id="4" type="hidden" readonly  style="border:none; width:18px; background-color:transparent;" value=""></input></th>
-						<% if(dayField.equals("fms_rec")) { %>
-							<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(5)">장애 인지 일자<br><input id="5" readonly style="border:none; width:18px; background-color:transparent;" value="▽"></input></th>
-						<% } else if(dayField.equals("fms_doc")) { %>
-							<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(5)">보고 작성 일자<br><input id="5" readonly style="border:none; width:18px; background-color:transparent;" value="▽"></input></th>
-						<% } else if(dayField.equals("fms_str")) { %>
-							<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(5)">장애 발생 일자<br><input id="5" readonly style="border:none; width:18px; background-color:transparent;" value="▽"></input></th>
-						<% } else if(dayField.equals("fms_end")) { %>
-							<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(5)">장애 조치 일자<br><input id="5" readonly style="border:none; width:18px; background-color:transparent;" value="▽"></input></th>
-						<% } %>
-						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(6)">SLA 여부<br><input id="6" type="hidden" readonly  style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(0)">시스템<input type="hidden" readonly id="0" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style=" width:50%; background-color: #eeeeee; text-align: center; cursor:pointer" onclick="sortTable(1)">장애 내용<input type="hidden" readonly id="1" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(2)">작성자<input type="hidden" readonly id="2" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(3)">심각도<input type="hidden" readonly id="3" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(4)">점수<input type="hidden" readonly id="4" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(5)">장애 인지 일자<input id="5" readonly style="border:none; width:18px; background-color:transparent;" value="▽"></input> </th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(6)">상태<input type="hidden" readonly id="6" style="border:none; width:18px; background-color:transparent;" value=""></input></th>
 					</tr>
 				</thead>
 				<%
@@ -230,40 +225,36 @@
 				<tbody>
 					<%
 						for(int i = 0; i < list.size(); i++){
+							String sig = list.get(i).getFms_sig();
+							if(sig.equals("저장")) {
+								sig = "미제출";
+							}
 					%>
 						<!-- 게시글 제목을 누르면 해당 글을 볼 수 있도록 링크를 걸어둔다 -->
 					<tr>
 						<!--  (1) 시스템 -->
 						<td><%= list.get(i).getFms_sys() %></td>
 						<!-- (2) 장애 내용 -->
-						<td style="text-align: center">
-						<a href="/FMS/admin/fmsPrintAdmin.jsp?fmsr_cd=<%= list.get(i).getFmsr_cd() %>&user_id=<%= list.get(i).getUser_id() %>">
+						<td style="text-align:left">
+						<a href="/FMS/admin/fmsUpdateAdmin.jsp?fmsr_cd=<%= list.get(i).getFmsr_cd() %>&user_id=<%= list.get(i).getUser_id() %>">
 							<%= list.get(i).getFms_con() %></a></td>
 						<!-- (3) 작성자 -->	
-						<td><%= userDAO.getName(list.get(i).getUser_id()) %></td>						
+						<td><%= userDAO.getName(list.get(i).getUser_id()) %></td>
 						<!--  (4) 심각도 -->
 						<td><%= list.get(i).getFms_sev() %>등급</td>
-						<!--  (5) 심각도 값 -->
+						<!--  (5) 심각도 -->
 						<td><%= list.get(i).getFms_sco() %>점</td>
-						<!-- (6) 장애 인지 일자 (또는 타day) -->
-						<% if(dayField.equals("fms_rec")) { %>
-							<td><%= list.get(i).getFms_rec() %></td>
-						<% } else if(dayField.equals("fms_doc")) { %>
-							<td><%= list.get(i).getFms_doc() %></td>
-						<% } else if(dayField.equals("fms_str")) { %>
-							<td><%= list.get(i).getFms_str() %></td>
-						<% } else if(dayField.equals("fms_end")) { %>
-							<td><%= list.get(i).getFms_end() %></td>
-						<% } %>
-						<!-- (7) SLA 대상여부 -->
-						<td><%= list.get(i).getFms_sla() %></td>
+						<!-- (6) 장애 인지 일자-->
+						<td><%= list.get(i).getFms_rec() %></td>
+						<!--  (7) 제출 여부 -->
+						<td><%= sig %></td>
 					</tr>
 					<%
 						}
 					%>
 				</tbody>
 				<% } else { %>
-					<tbody><tr><th colspan="7" style="text-align: center; border: 1px solid #dddddd;">승인된 장애 보고가 없습니다.<br></th></tr></tbody>
+					<tbody><tr><th colspan="7" style="text-align: center; border: 1px solid #dddddd;">미승인된 장애 보고가 없습니다.<br><br>승인된 목록은 <a href="/FMS/admin/fbbsAdminSla.jsp">[SLA]</a> 조회에서 확인 가능합니다.</th></tr></tbody>
 				<% } %>
 			</table>
 			
@@ -271,20 +262,19 @@
 			<%
 				if(pageNumber != 1){
 			%>
-					<a href="/FMS/admin/searchfbbsAdminSla.jsp?pageNumber=<%=pageNumber - 1 %>"
+					<a href="/FMS/user/fbbs.jsp?pageNumber=<%=pageNumber - 1 %>"
 					class="btn btn-success btn-arraw-left">이전</a>
 			<%
 				}if(aflist.size() != 0){
 			%>
-					<a href="/FMS/admin/searchfbbsAdminSla.jsp?pageNumber=<%=pageNumber + 1 %>"
+					<a href="/FMS/user/fbbs.jsp?pageNumber=<%=pageNumber + 1 %>"
 					class="btn btn-success btn-arraw-left" id="next">다음</a>
 			<%
 				}
 			%>
-			<!-- 출력 버튼 생성 -->
-			<button class="btn btn-success pull-right" onclick="fmsAdminReportAction()" style="margin-right:20px" data-toggle="tooltip" data-html="true" data-placement="bottom" title="설정된 기준에 따라, [장애리포트]를 출력합니다.">출력</button>
 		</div>
 	</div>
+	
 	
 	
 	<!-- 게시판 메인 페이지 영역 끝 -->
@@ -294,34 +284,33 @@
 	<script src="../css/js/bootstrap.js"></script>
 	<script src="../modalFunction.js"></script>
 	
-
-	
 	<script>
 		// 로드시 설정 변경
 		var category = '<%= category %>';
 		var strRe = '<%= str %>';
+		var sig = '<%= fsig %>';
 		
 		$( document ).ready( function() {
 			if(category == "fms_sys") {
 				$("#searchText").attr('type','hidden'); //텍스트 필드가 보이지 않도록 수정합니다.
-				$("#searchSla").css('display', 'none'); 
+				$("#searchSig").css('display', 'none'); 
 				$("#searchSys").css('display', 'block'); //선택 상자 출력
 				
 				// 값 설정
 				$("#searchSys").val(strRe).prop("selected",true);
 	
 				
-			} else if(category == "fms_sla") { 
+			} else if(category == "fms_sig") { 
 				$("#searchText").attr('type','hidden'); //텍스트 필드가 보이지 않도록 수정합니다.
 				$("#searchSys").css('display', 'none'); 
-				$("#searchSla").css('display', 'block'); //선택 상자 출력
+				$("#searchSig").css('display', 'block'); //선택 상자 출력
 				
 				// 값 설정
-				$("#searchSla").val(strRe).prop("selected",true);
+				$("#searchSig").val(sig).prop("selected",true);
 			} else if(category == "user_id" || category == "fms_con") {
 				$("#searchText").attr('type','text'); //텍스트 필드가 보이지 않도록 수정합니다.
 				$("#searchSys").css('display', 'none'); 
-				$("#searchSla").css('display', 'none'); //선택 상자 출력
+				$("#searchSig").css('display', 'none'); //선택 상자 출력
 				
 				// 값 설정
 				$("#searchText").attr('value', strRe);
@@ -333,23 +322,23 @@
 			
 			if(value_str.value == "fms_sys") {
 				$("#searchText").attr('type','hidden'); //텍스트 필드가 보이지 않도록 수정합니다.
-				$("#searchSla").css('display', 'none'); 
+				$("#searchSig").css('display', 'none'); 
 				$("#searchSys").css('display', 'block'); //선택 상자 출력
 				
 				// 값 변경
 				$("#searchText").attr('value',$("#searchSys").val());
 	
 				
-			} else if(value_str.value == "fms_sla") { 
+			} else if(value_str.value == "fms_sig") { 
 				$("#searchText").attr('type','hidden'); //텍스트 필드가 보이지 않도록 수정합니다.
 				$("#searchSys").css('display', 'none'); 
-				$("#searchSla").css('display', 'block'); //선택 상자 출력
+				$("#searchSig").css('display', 'block'); //선택 상자 출력
 				
 				// 값 변경
-				$("#searchText").attr('value',$("#searchSla").val());	
+				$("#searchText").attr('value',$("#searchSig").val());	
 			}else {
 				$("#searchText").attr('type','text'); 
-				$("#searchSla").css('display', 'none'); 
+				$("#searchSig").css('display', 'none'); 
 				$("#searchSys").css('display', 'none');
 				
 				// 값 변경
@@ -367,8 +356,8 @@
 			$("#searchText").attr('value',value_str.value);
 		}
 		
-		function ChangeSla() {
-			var value_str = document.getElementById('searchSla');
+		function ChangeSig() {
+			var value_str = document.getElementById('searchSig');
 			// 값 변경
 			$("#searchText").attr('value',value_str.value);
 		}
@@ -381,20 +370,6 @@
 	if(trCnt < 11) {
 		$('#next').hide();
 	}
-	</script>
-	
-	<script>
-	// [장애레포트] 출력
-	function fmsAdminReportAction() {
-		var category = '<%= category %>';
-		var strRe = '<%= strRe %>';
-		var str_day = '<%= str_day %>';
-		var end_day = '<%= end_day %>';
-		var dayField = '<%= dayField %>';
-		
-		location.href='/FMS/admin/action/fmsAdminReportAction.jsp?category='+category+'&strRe='+strRe+'&str_day='+str_day+'&end_day='+end_day+'&dayField='+dayField;
-	}
-	
 	</script>
 	
 </body>

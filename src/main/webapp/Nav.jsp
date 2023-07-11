@@ -86,7 +86,7 @@
 			</button>
 			<select style="border:none; background-color:#e7e7e7;" class="navbar-brand" onchange="top.location.href=this.options[this.selectedIndex].value;">
 				<option value="/FMS/user/fbbs.jsp">Incident Management System</option>
-				<option value="/RMS/user/bbs.jsp">Report Management System</option>
+				<option value="/RMS/user/bbs.jsp?user_id=<%= id %>">Report Management System</option>
 			</select>
 		</div>
 		
@@ -100,7 +100,12 @@
 						<!-- 드랍다운 아이템 영역 -->	
 					<% if(au.equals("관리자")) { %>
 						<ul class="dropdown-menu">
+							<li><h5 style="background-color: #e7e7e7; height:40px; margin-top:-20px" class="dropdwon-header"><br>&nbsp;&nbsp; 장애보고 확인</h5></li>
 							<li><a href="/FMS/admin/fbbsAdmin.jsp">조회 및 승인</a></li>
+							<li><h5 style="background-color: #e7e7e7; height:40px;" class="dropdwon-header"><br>&nbsp;&nbsp; SLA 대상여부 </h5></li>
+							<li><a href="/FMS/admin/fbbsAdminSla.jsp">조회 및 출력</a></li>
+							<!-- <li><h5 style="background-color: #e7e7e7; height:40px;" class="dropdwon-header"><br>&nbsp;&nbsp; 연간 장애리포트</h5></li>
+							<li><a onClick="reportModal()">장애리포트 생성</a></li> -->
 						</ul>
 					<% }else { %>
 						<!-- 일반 사용자 view -->
@@ -110,25 +115,6 @@
 						</ul>
 					<% } %>
 					</li>
-						
-						<%
-							if(au.equals("관리자")) {
-						%>
-							<li class="dropdown">
-							<a href="#" class="dropdown-toggle"
-								data-toggle="dropdown" role="button" aria-haspopup="true"
-								aria-expanded="false">SLA<span class="caret"></span></a>
-							<!-- 드랍다운 아이템 영역 -->	
-							<ul class="dropdown-menu">
-								<li><h5 style="background-color: #e7e7e7; height:40px; margin-top:-20px" class="dropdwon-header"><br>&nbsp;&nbsp; SLA 대상여부</h5></li>
-								<li><a href="/FMS/admin/fbbsAdminSla.jsp">조회 및 출력</a></li>
-								<li><h5 style="background-color: #e7e7e7; height:40px;" class="dropdwon-header"><br>&nbsp;&nbsp; 연간 장애리포트</h5></li>
-								<li><a onClick="reportModal()">장애리포트 생성</a></li>
-							</ul>
-							</li>
-						<%
-							}
-						%>
 				</ul>
 			
 		
