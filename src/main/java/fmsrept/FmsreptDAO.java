@@ -202,7 +202,8 @@ public class FmsreptDAO {
 			//System.out.println(SQL);
 			
 			if(SQL.contains("between") || str_day.contains("1900-01-01") || str_day.equals(end_day)) {
-				SQL += " ("+dayField+" LIKE '"+end_day.trim()+"%')"; //end_day까지 포함하기
+				//SQL += " ("+dayField+" LIKE '"+end_day.trim()+"%')"; //end_day까지 포함하기
+				SQL += "("+dayField+" between '"+str_day.trim()+"' and '"+end_day.trim()+"') "; //" (fms_rec <= '"+end_day.trim()+"') ";
 			} else {
 				SQL += "("+dayField+" between '"+str_day.trim()+"' and '"+end_day.trim()+"') "; //" (fms_rec <= '"+end_day.trim()+"') ";
 			}
@@ -472,7 +473,8 @@ public class FmsreptDAO {
 			//System.out.println(SQL);
 			
 			if(SQL.contains("between") || str_day.contains("1900-01-01") || str_day.equals(end_day)) {
-				SQL += " ("+dayField+" LIKE '"+end_day.trim()+"%')"; //end_day까지 포함하기
+				//SQL += " ("+dayField+" LIKE '"+end_day.trim()+"%')"; //end_day까지 포함하기
+				SQL += "("+dayField+" between '"+str_day.trim()+"' and '"+end_day.trim()+"') "; //" (fms_rec <= '"+end_day.trim()+"') ";
 			} else {
 				SQL += "("+dayField+" between '"+str_day.trim()+"' and '"+end_day.trim()+"') "; //" (fms_rec <= '"+end_day.trim()+"') ";
 			}

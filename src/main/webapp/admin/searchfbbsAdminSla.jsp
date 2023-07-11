@@ -118,11 +118,11 @@
 
 	%>
 
-	<textarea><%= category  %></textarea><br>
+<%-- 	<textarea><%= category  %></textarea><br>
 	<textarea><%= strRe %></textarea><br>
 	<textarea><%= str_day %></textarea><br>
 	<textarea><%= end_day %></textarea><br>
-	<textarea><%= dayField %></textarea>
+	<textarea><%= dayField %></textarea> --%>
 
 	<!-- nav바 불러오기 -->
     <jsp:include page="../Nav.jsp"></jsp:include>
@@ -135,7 +135,7 @@
 				<tr>
 					<th style=" text-align: left" data-toggle="tooltip" data-html="true" data-placement="bottom" title=""> 
 					<br><i class="glyphicon glyphicon-triangle-right" id="icon"  style="left:5px;"></i> 승인된 장애보고 목록 (관리자)
-					<br><h6>: '승인'된 장애 보고를 확인 및 출력할 수 있습니다.</h6>
+					<br><h6>: '승인'된 장애 보고를 확인 및 출력(SLA 여부에 따라 개별 출력)할 수 있습니다.</h6>
 				</th>
 				</tr>
 			</thead>
@@ -143,6 +143,9 @@
 			<form method="post" name="search" action="/FMS/admin/searchfbbsAdminSla.jsp">
 			<div style="width:50%; display:flex; flex-direction:column; float:right">
 				<table>
+					<tr>
+						<td colspan="5"><h5>조건 검색을 통해 [장애리포트]를 출력할 수 있습니다.</h5></td>
+					</tr>
 					<!-- 기준일자 선택 (시작일 - 기준 끝일) -->
 					<tr style="width:70%">
 						<td style="margin-right:10px">
@@ -153,9 +156,9 @@
 								<option value="fms_end" <%= dayField.equals("fms_end") ? "selected":"" %>>조치 완료 일자</option>
 							</select>
 						</td>
-						<td><input type="date" class="form-control" name="str_day" style="margin-right:10px" value="<%= str_day %>"></td>
+						<td><input type="date" class="form-control" id="str_day" name="str_day" style="margin-right:10px" value="<%= str_day %>"></td>
 						<td> ~ </td> 
-						<td><input type="date" class="form-control" name="end_day" style="margin-left:10px; margin-bottom:5px" value="<%= end_day %>"></td>
+						<td><input type="date" class="form-control" id="str_day" name="end_day" style="margin-left:10px; margin-bottom:5px" value="<%= end_day %>"></td>
 					</tr>
 				</table>
 				<table>

@@ -118,9 +118,9 @@
 								<option value="fms_end">조치 완료 일자</option>
 							</select>
 						</td>
-						<td><input type="date" class="form-control" name="str_day" style="margin-right:10px" ></td>
+						<td><input type="date" class="form-control" id="str_day" name="str_day" style="margin-right:10px" onChange="strYear()" ></td>
 						<td> ~ </td> 
-						<td><input type="date" class="form-control" name="end_day" style="margin-left:10px;" ></td>
+						<td><input type="date" class="form-control" id="end_day" name="end_day" style="margin-left:10px;" ></td>
 					</tr>
 				</table>
 				
@@ -231,9 +231,6 @@
 			<%
 				}
 			%>
-			<!-- 출력 버튼 생성 -->
-			<a href="/RMS/user/bbsUpdate.jsp" class="btn btn-info pull-right" data-toggle="tooltip" data-html="true" data-placement="bottom" title="주간보고 작성">작성</a>
-			<button class="btn btn-success pull-right" onclick="rmsModalAction()" style="margin-right:20px" data-toggle="tooltip" data-html="true" data-placement="bottom" title="설정된 기준에 따라, [장애리포트]를 출력합니다.">출력</button>
 		</div>
 	</div>
 	
@@ -249,6 +246,13 @@
 
 	
 	<script>
+	
+		function strYear() {
+			var strd = document.getElementById('str_day');
+			alert("값 : " + strd.value);
+		} 
+	
+	
 		function ChangeValue() {
 			var value_str = document.getElementById('searchField');
 			

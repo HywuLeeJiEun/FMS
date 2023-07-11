@@ -52,6 +52,12 @@
 		script.println("history.back();");
 		script.println("</script>");
 	} else {
+		
+	String year = str_day.substring(0, 4);
+	/* if(category.equals("fms_rec")) {
+		//장애 인지 일자
+		
+	} */
 	
 	
 	FmsreptDAO fms = new FmsreptDAO();

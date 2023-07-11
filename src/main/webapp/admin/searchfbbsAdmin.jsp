@@ -121,10 +121,10 @@
 	
 	%>
 	    
-	<textarea><%= category %></textarea><br>
+<%-- 	<textarea><%= category %></textarea><br>
 	<textarea><%= str %></textarea><br>   
 	<textarea><%= fsig %></textarea><br>
-	<textarea><%= list.size() %></textarea>
+	<textarea><%= list.size() %></textarea> --%>
 	    
 	<!-- nav바 불러오기 -->
     <jsp:include page="../Nav.jsp"></jsp:include>

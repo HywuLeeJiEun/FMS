@@ -115,9 +115,9 @@
 								<option value="fms_end">조치 완료 일자</option>
 							</select>
 						</td>
-						<td><input type="date" class="form-control" name="str_day" style="margin-right:10px" ></td>
+						<td><input type="date" class="form-control" id="str_day" name="str_day" style="margin-right:10px" ></td>
 						<td> ~ </td> 
-						<td><input type="date" class="form-control" name="end_day" style="margin-left:10px;" ></td>
+						<td><input type="date" class="form-control" id="str_day" name="end_day" style="margin-left:10px;" ></td>
 					</tr>
 				</table>
 				
@@ -256,7 +256,7 @@
 			$("#searchText").attr('value',$("#searchSys").val());
 
 			
-		} else if(value_str.value == "fms_sig) { 
+		} else if(value_str.value == "fms_sig") { 
 			$("#searchText").attr('type','hidden'); //텍스트 필드가 보이지 않도록 수정합니다.
 			$("#searchSys").css('display', 'none'); 
 			$("#searchSig").css('display', 'block'); //선택 상자 출력
