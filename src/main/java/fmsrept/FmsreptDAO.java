@@ -195,15 +195,16 @@ public class FmsreptDAO {
 				// 시작 기준일이 없는 경우,
 				if(end_day != null && !end_day.equals("")) {
 					str_day = "1900-01-01";
-				} else if(searchText != null && !searchText.equals("")) { // 데이터가 하나도 없는 경우!
-
+				} else {
+					end_day = "9999-13-31";
 				}
 			}
 			//System.out.println(SQL);
 			
-			if(SQL.contains("between") || str_day.contains("1900-01-01") || str_day.equals(end_day)) {
+			if(str_day.contains("1900-01-01") || str_day.equals(end_day)) {
+				SQL += " ("+dayField+" <= '"+end_day.trim()+"')"; //end_day까지 포함하기
 				//SQL += " ("+dayField+" LIKE '"+end_day.trim()+"%')"; //end_day까지 포함하기
-				SQL += "("+dayField+" between '"+str_day.trim()+"' and '"+end_day.trim()+"') "; //" (fms_rec <= '"+end_day.trim()+"') ";
+				//SQL += "("+dayField+" between '"+str_day.trim()+"' and '"+end_day.trim()+"') "; //" (fms_rec <= '"+end_day.trim()+"') ";
 			} else {
 				SQL += "("+dayField+" between '"+str_day.trim()+"' and '"+end_day.trim()+"') "; //" (fms_rec <= '"+end_day.trim()+"') ";
 			}
@@ -466,15 +467,16 @@ public class FmsreptDAO {
 				// 시작 기준일이 없는 경우,
 				if(end_day != null && !end_day.equals("")) {
 					str_day = "1900-01-01";
-				} else if(searchText != null && !searchText.equals("")) { // 데이터가 하나도 없는 경우!
-
+				} else {
+					end_day = "9999-13-31";
 				}
 			}
 			//System.out.println(SQL);
 			
-			if(SQL.contains("between") || str_day.contains("1900-01-01") || str_day.equals(end_day)) {
+			if(str_day.contains("1900-01-01") || str_day.equals(end_day)) {
+				SQL += " ("+dayField+" <= '"+end_day.trim()+"')"; //end_day까지 포함하기
 				//SQL += " ("+dayField+" LIKE '"+end_day.trim()+"%')"; //end_day까지 포함하기
-				SQL += "("+dayField+" between '"+str_day.trim()+"' and '"+end_day.trim()+"') "; //" (fms_rec <= '"+end_day.trim()+"') ";
+				//SQL += "("+dayField+" between '"+str_day.trim()+"' and '"+end_day.trim()+"') "; //" (fms_rec <= '"+end_day.trim()+"') ";
 			} else {
 				SQL += "("+dayField+" between '"+str_day.trim()+"' and '"+end_day.trim()+"') "; //" (fms_rec <= '"+end_day.trim()+"') ";
 			}

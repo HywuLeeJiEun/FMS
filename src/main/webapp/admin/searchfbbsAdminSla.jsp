@@ -98,6 +98,23 @@
 			strRe = "";
 		}
 		
+		int yearData = 0;
+		
+		//연도 데이터가 다르다면, confirm을 띄웁니다.
+		if(str_day.equals("") || end_day.equals("")) {
+			yearData = 1;
+		} else if(!str_day.substring(0, 4).equals(end_day.substring(0,4))) {
+			yearData = 1;
+		}
+		
+		if(yearData == 1) {
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("if(!confirm('[장애리포트]의 경우, 연간 데이터로만 생성 가능합니다.\\n현재 설정한 날짜 범위가 초과되어 레포트 생성이 불가합니다.\\n목록을 조회하시겠습니까?')) {");
+			script.println("location.href='/FMS/admin/fbbsAdminSla.jsp'}");
+			script.println("</script>");
+		}
+		
 		
 		// fms_sig = "제출"인 장애 보고 목록을 조회
 		//기존 데이터 불러오기 (가장 최근에 작성된 fms 조회)
@@ -118,19 +135,13 @@
 
 	%>
 
-<%-- 	<textarea><%= category  %></textarea><br>
-	<textarea><%= strRe %></textarea><br>
-	<textarea><%= str_day %></textarea><br>
-	<textarea><%= end_day %></textarea><br>
-	<textarea><%= dayField %></textarea> --%>
-
 	<!-- nav바 불러오기 -->
     <jsp:include page="../Nav.jsp"></jsp:include>
 	
 	<!-- ***********검색바 추가 ************* -->
 	<div class="container">
-		<div class="row">
-			<table class="pull-left" style="text-align: center; cellpadding:50px; width:60%" >
+		<div class="row" style="display:flex; flex-direction:column;">
+			<table class="pull-left" style="text-align: center; cellpadding:50px; width:100%" >
 			<thead>
 				<tr>
 					<th style=" text-align: left" data-toggle="tooltip" data-html="true" data-placement="bottom" title=""> 
@@ -147,7 +158,7 @@
 						<td colspan="5"><h5>조건 검색을 통해 [장애리포트]를 출력할 수 있습니다.</h5></td>
 					</tr>
 					<!-- 기준일자 선택 (시작일 - 기준 끝일) -->
-					<tr style="width:70%">
+					<tr>
 						<td style="margin-right:10px">
 							<select style="width:95%" class="form-control" name="dayField" id="dayField" onchange="ChangeValueOfDay()">
 								<option value="fms_rec" <%= dayField.equals("fms_rec") ? "selected":"" %>>장애 인지 일자</option>
@@ -165,14 +176,14 @@
 					<!-- 검색어 입력 -->
 					<tr>
 						<td>
-							<select style="width:90%" class="form-control" name="searchField" id="searchField" onchange="ChangeValue()">
+							<select style="width:95%" class="form-control" name="searchField" id="searchField" onchange="ChangeValue()">
 								<option value="fms_sla" <%= category.equals("fms_sla") ? "selected":"" %>>SLA 여부</option>
 								<option value="fms_con" <%= category.equals("fms_con") ? "selected":"" %>>장애 내용</option>
 								<option value="fms_sys" <%= category.equals("fms_sys") ? "selected":"" %>>시스템</option>
 								<option value="user_id" <%= category.equals("user_id") ? "selected":"" %>>작성자</option>
 							</select>
 						</td>
-						<td><input type="hidden" class="form-control" style="margin-right:10px"
+						<td><input type="hidden" class="form-control" style="margin-right:10px;"
 							placeholder="검색어 입력" name="searchText" id="searchText" maxlength="100" value="<%= str %>">
 							<select class="form-control" name="searchSys" id="searchSys" style="margin-right:10px; display:none;" onchange="ChangeSys()">
 								<!-- 시스템 목록 출력 -->
@@ -192,7 +203,7 @@
 								<option>N</option>
 							</select>
 						</td>
-						<td><button type="submit" style="margin:5px" class="btn btn-success" style="margin-left:10px">검색</button></td>
+						<td colspan="2"><button type="submit" class="btn btn-success" style="margin:5px">검색</button><a type="button" class="btn btn-info" href="/FMS/admin/fbbsAdminSla.jsp">초기화</a></td>
 					</tr>
 				</table>
 				</div>
@@ -211,7 +222,7 @@
 					<tr>
 						<!-- <th style="background-color: #eeeeee; text-align: center;">번호</th> -->
 						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(0)">시스템<br><input id="0" type="hidden" readonly  style="border:none; width:18px; background-color:transparent;" value=""></input></th>
-						<th style="width:50%; background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(1)">장애 내용<br><input id="1" type="hidden" readonly  style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style=" width:50%; background-color: #eeeeee; text-align: center; cursor:pointer" onclick="sortTable(1)">장애 내용<br><input id="1" type="hidden" readonly  style="border:none; width:18px; background-color:transparent;" value=""></input></th>
 						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(2)">작성자<br><input id="2" type="hidden" readonly  style="border:none; width:18px; background-color:transparent;" value=""></input></th>
 						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(3)">심각도<br><input id="3" type="hidden" readonly  style="border:none; width:18px; background-color:transparent;" value=""></input></th>
 						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(4)">점수<br><input id="4" type="hidden" readonly  style="border:none; width:18px; background-color:transparent;" value=""></input></th>
@@ -224,7 +235,7 @@
 						<% } else if(dayField.equals("fms_end")) { %>
 							<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(5)">장애 조치 일자<br><input id="5" readonly style="border:none; width:18px; background-color:transparent;" value="▽"></input></th>
 						<% } %>
-						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(6)">SLA 여부<br><input id="6" type="hidden" readonly  style="border:none; width:18px; background-color:transparent;" value=""></input></th>
+						<th style="background-color: #eeeeee; text-align: center; cursor:pointer"onclick="sortTable(6)">SLA 여부<br><input id="6" type="hidden" readonly  style="border:none; width:18px; background-color:transparent;" value=""></input> </th>
 					</tr>
 				</thead>
 				<%
@@ -283,9 +294,15 @@
 					class="btn btn-success btn-arraw-left" id="next">다음</a>
 			<%
 				}
+				
+				if(yearData != 1) {
 			%>
 			<!-- 출력 버튼 생성 -->
-			<button class="btn btn-success pull-right" onclick="fmsAdminReportAction()" style="margin-right:20px" data-toggle="tooltip" data-html="true" data-placement="bottom" title="설정된 기준에 따라, [장애리포트]를 출력합니다.">출력</button>
+			<button class="btn btn-success pull-right" onclick="fmsAdminReportAction()" data-toggle="tooltip" data-html="true" data-placement="bottom" title="설정된 기준에 따라, [장애리포트]를 출력합니다.">출력</button>
+			<%
+				} 
+			%>
+
 		</div>
 	</div>
 	

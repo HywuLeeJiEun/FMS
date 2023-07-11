@@ -118,7 +118,7 @@
 								<option value="fms_end">조치 완료 일자</option>
 							</select>
 						</td>
-						<td><input type="date" class="form-control" id="str_day" name="str_day" style="margin-right:10px" onChange="strYear()" ></td>
+						<td><input type="date" class="form-control" id="str_day" name="str_day" style="margin-right:10px"></td>
 						<td> ~ </td> 
 						<td><input type="date" class="form-control" id="end_day" name="end_day" style="margin-left:10px;" ></td>
 					</tr>
@@ -128,7 +128,7 @@
 					<!-- 검색어 입력 -->
 					<tr>
 						<td>
-							<select style="width:90%" class="form-control" name="searchField" id="searchField" onchange="ChangeValue()">
+							<select style="width:95%" class="form-control" name="searchField" id="searchField" onchange="ChangeValue()">
 								<option value="fms_sla">SLA 여부</option>
 								<option value="fms_con">장애 내용</option>
 								<option value="fms_sys">시스템</option>
@@ -246,13 +246,6 @@
 
 	
 	<script>
-	
-		function strYear() {
-			var strd = document.getElementById('str_day');
-			alert("값 : " + strd.value);
-		} 
-	
-	
 		function ChangeValue() {
 			var value_str = document.getElementById('searchField');
 			
