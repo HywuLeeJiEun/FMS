@@ -251,13 +251,11 @@
 	    		// 일련번호
 	    		String fmsr_cdNum = "";
 	    		// 나머지 데이터들도 확인된 데이터를 통해 채움. 
-	    		String rs = fms.countFms(user_id, fms_doc);
-	    		if(rs == "" || rs.isEmpty() || rs == null) {
+	    		int rs = fms.countFms(user_id, fms_doc);
+	    		if(rs == 0) {
 	    			fmsr_cdNum = "01";
 	    		} else {
-	    			rs = rs.replaceAll(fms_doc.replaceAll("[.,-]", ""), "");
-	    			rs = rs.replace(user_id, "");
-	    			fmsr_cdNum = String.format("%02d", Integer.parseInt(rs) + 1);
+	    			fmsr_cdNum = String.format("%02d", rs + 1);
 	    		}
 	    		
 	    		fmsr_cd = fms_doc.replaceAll("[.,-]", "") + user_id + fmsr_cdNum;

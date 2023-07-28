@@ -333,22 +333,22 @@ public class FmsreptDAO {
 	
 	
 	//FMSREPT - fmsrept 저장하기(추가하기) // fmsAction.jsp
-	public String countFms(String user_id, String fms_doc) {
+	public int countFms(String user_id, String fms_doc) {
 		String fmsr_cd = fms_doc.replaceAll("[-]", "");
 		fmsr_cd = fmsr_cd.replaceAll("[.]", "");
-		String sql = "select fmsr_cd from fmsrept where fmsr_cd LIKE '"+fmsr_cd+user_id+"%' order by fmsr_cd desc";
+		String sql = "select count(distinct(fmsr_cd)) from fmsrept where fmsr_cd LIKE '"+fmsr_cd+user_id+"%' order by fmsr_cd desc";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
-			// 이때, 생성된 자료가 없다면 01, 있다면 count 개수 + 1
+			// 이때, 생성된 자료가 없다면 0, 있다면 count 개수
 			if(rs.next()) {
-				return rs.getString(1); //fmsr_cd
+				return rs.getInt(1); //fmsr_cd
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-		return "";
+		return 0;
 	}
 		
 		

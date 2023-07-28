@@ -72,18 +72,16 @@
 			String fmsr_cdDoc = fms_doc.replaceAll("[.]", "");
 			fmsr_cdDoc = fmsr_cdDoc.replaceAll("[-]", "");
 			
-			String rs = fms.countFms(user_id, fms_doc);
+			int rs = fms.countFms(user_id, fms_doc);
 			//System.out.println(rs);
-			if(rs == "" || rs.isEmpty() || rs == null) {
+			if(rs == 0) {
 				rsres = "01";
 			} else {
-				rs = rs.replaceAll(fmsr_cdDoc, "");
-				rs = rs.replaceAll(user_id, "");
-				rsres = String.format("%02d", Integer.parseInt(rs) + 1 );
+				rsres = String.format("%02d", rs + 1 );
 				//System.out.println(rs);
 			}
 			
-			fmsr_cd = fmsr_cdDoc + userDAO.getTaskNum(fms_sys) + user_id + rsres ;
+			fmsr_cd = fmsr_cdDoc + user_id + rsres ;
 		
 			//에러없이 진행됨!
 			int result = fms.writeFms(fmsr_cd, user_id, fms_doc, fms_con, fms_str, fms_end, fms_rec, fms_fov, fms_acd, fms_bcd, fms_ccd, fms_sco, fms_sev, fms_rte, fms_dif, fms_dcd, fms_sys, fms_dre, fms_drp, fms_sym, fms_emr, fms_dfu, fms_eff, fms_cau, fms_res, fms_sla, sla_rea, fms_sig, fms_upa);

@@ -175,7 +175,7 @@
 							//System.out.println(row.getLastCellNum()); 0~13 (14개)
 							if(j == 0) {
 								// 번호
-								cell.setCellValue(j+1);
+								cell.setCellValue(r+1);
 							} else if (j == 1) {
 								// 시스템
 								cell.setCellValue(flist.get(r).getFms_sys());
@@ -228,7 +228,7 @@
 					//}
 				}
 				//끝나기 전에 fovAll 처리
-				//System.out.println("cell 1 : "+sheet.getRow(fovAllRow).getCell(5));
+				System.out.println("cell 1 : "+sheet.getRow(fovAllRow).getCell(5));
 				Cell fovCell = sheet.getRow(fovAllRow).getCell(5);
 				// 총시간
 				long day = fovAll / (60 * 24);

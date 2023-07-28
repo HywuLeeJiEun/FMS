@@ -363,7 +363,7 @@
 	<script src="../modalFunction.js"></script>
 	
 	 <script>
-	 // 장애발생 일자(str), 조치완료 일자(end)의 값을 확인하여 '장애시간(fov)'을 도출한다.
+	 // 장애인지일자(rec), 조치완료 일자(end)의 값을 확인하여 '장애시간(fov)'을 도출한다.
       $( document ).ready( function() {
         $( '#fms_str, #fms_rec, #fms_end' ).change( function() {
           var t = new Date($( '#fms_str' ).val());

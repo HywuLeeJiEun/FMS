@@ -110,7 +110,7 @@
 					</tr>
 					<!-- 기준일자 선택 (시작일 - 기준 끝일) -->
 					<tr>
-						<td style="margin-right:10px">
+						<td style="margin-right:12px">
 							<select style="width:95%" class="form-control" name="dayField" id="dayField" onchange="ChangeValueOfDay()">
 								<option value="fms_rec">장애 인지 일자</option>
 								<option value="fms_doc">보고 작성 일자</option>

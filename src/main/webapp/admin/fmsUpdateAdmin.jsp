@@ -201,20 +201,20 @@
 								<th style="text-align: center;border: 1px solid #dddddd;" colspan="3"><textarea maxlength="1000" class="textarea"  class="textarea" id="fms_con" name="fms_con" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_con() %></textarea></th>
 							</tr>
 							<tr class="ui-state-default ui-state-disabled">
-								<th style="text-align: center; border: 1px solid #dddddd;">장애 발생 일자</th>
-								<th style="text-align:center"><input readonly id="fms_str" type="datetime-local" name="fms_str" required value="<%= flist.get(0).getFms_str() %>"></th>
-								<th style="text-align: center; border: 1px solid #dddddd;">조치 완료 일자</th>
-								<th style="text-align:center"><input readonly id="fms_end" type="datetime-local" name="fms_end" required value="<%= fms_end %>"></th>
+								<th style="text-align: center; border: 1px solid #dddddd; color:#3104B4;">장애 발생 일자</th>
+								<th style="text-align:center"><input id="fms_str" type="datetime-local" name="fms_str" required value="<%= flist.get(0).getFms_str() %>"></th>
+								<th style="text-align: center; border: 1px solid #dddddd;" id="thfms_end">조치 완료 일자</th>
+								<th style="text-align:center"><input id="fms_end" type="datetime-local" name="fms_end" required value="<%= fms_end %>"></th>
 							</tr>
 							<tr class="ui-state-default ui-state-disabled">
-								<th style="text-align: center; border: 1px solid #dddddd;">장애 인지 일자</th>
-								<th style="text-align:center"><input readonly id="fms_rec" type="datetime-local" name="fms_rec" required value="<%= flist.get(0).getFms_rec() %>"></th>
+								<th style="text-align: center; border: 1px solid #dddddd; color:#3104B4;">장애 인지 일자</th>
+								<th style="text-align:center"><input id="fms_rec" type="datetime-local" name="fms_rec" required value="<%= flist.get(0).getFms_rec() %>"></th>
 								<th style="text-align: center; border: 1px solid #dddddd;">장애시간 / 복구 목표시간</th>
 								<th style="text-align:left"><input id="fms_fov" name="fms_fov" style="width:35%; border:none; text-align:right;" readonly data-toggle="tooltip" data-html="true" data-placement="bottom" title="장애발생 일자, 조치 완료 일자 선택 시 자동으로 계산됩니다." value="<%= fms_fov %>"></input>/190분</th>
 							</tr>
 							<tr class="ui-state-default ui-state-disabled">
 								<th style="text-align: center; border: 1px solid #dddddd;" onClick="dataSEV()">심각도(등급)</th>
-								<th style="text-align:center" onClick="dataSEV()"><input name="fms_sev" style="width:10px; border:none; text-align:left" readonly value="<%= flist.get(0).getFms_sev()%>"></input>등급<button style="margin-left:5px" id="sev" type="button">확인</button><input type="hidden" name="fms_sco" value="<%= flist.get(0).getFms_sco() %>"></th>
+								<th style="text-align:center" onClick="dataSEV()"><input name="fms_sev" style="width:12px; border:none; text-align:left" readonly value="<%= flist.get(0).getFms_sev()%>"></input>등급<button style="margin-left:5px" id="sev" type="button">확인</button><input type="hidden" name="fms_sco" value="<%= flist.get(0).getFms_sco() %>"></th>
 								<th style="text-align: center; color:#3104B4; border: 1px solid #dddddd;">장애 인지 경로</th>
 								<th style="text-align:center"><textarea id="fms_rte" name="fms_rte"  class="textarea"  class="textarea" style="width:100%; border:none; resize:none" required><%= flist.get(0).getFms_rte() %></textarea></th>
 							</tr>
@@ -321,7 +321,7 @@
 							<!-- 저장 버튼 생성 -->
 							<a type="button" href="/FMS/user/fbbs.jsp" style="margin-bottom:50px; margin-left:20px" class="btn btn-primary pull-right"> 목록 </a>
 							<%
-								if(flist.get(0).getFms_sig().equals("제출")) { // '제출' - 사용(개발자)가 승인 수령을 위해 보고를 제출한 상태
+								if(flist.get(0).getFms_sig().equals("제출") || flist.get(0).getFms_sig().equals("저장")) { // '제출','미제출' - 사용(개발자)가 승인 수령을 위해 보고를 제출한 상태
 							%>
 							<button type="button" onClick="SaveData()" style="margin-bottom:50px" class="btn btn-success pull-right" data-toggle="tooltip" data-html="true" data-placement="bottom" data-html="true" title="승인 처리를 진행합니다. <br>데이터 수정이 발생한 경우, 수정된 데이터를 승인합니다."> 승인 </button>	
 							<button onClick="return confirm('승인하시겠습니까?\n수정된 데이터가 있는 경우, 해당 데이터로 승인됩니다.')" type="Submit" id="fmssave" style="display:none"></button>						
@@ -395,7 +395,59 @@
 			rea.attr("required" , false);
 			reaTr.css("display","none");
 		}
+		
+		// 데이터가 비어 있는 경우 파란색으로 변경
+		var fms_end = '<%= fms_end %>';
+		if(fms_end.length === 0) {
+			//비어 있다면, 색상 변경
+			document.getElementById("thfms_end").style.color = '#3104B4';
+		}
+		
+		$( '#fms_str, #fms_rec, #fms_end' ).change( function() {
+          var t = new Date($( '#fms_str' ).val());
+          var a = new Date($( '#fms_rec' ).val());
+          var b = new Date($( '#fms_end' ).val());
+          var c = (b-a) / 60000; //분으로 표시
+          var c2 = (b-t) / 60000; //분으로 표시
+          
+          if(c2 <= 0) { 
+        	  alert("장애 발생 일자가 조치 완료 일자에 대한 설정이 올바르지 않습니다.\n조치 완료 일자보다 이전인 날짜로 설정해 주십시오."); 
+        	  $( '#fms_str' ).val("");
+          }
+
+          if(a != "Invalid Date" && b != "Invalid Date") {
+	          if(c > 0) { //양수인 경우, 즉, 완료일이 발생일자보다 적지 않은경우!
+	          	$( '#fms_fov' ).attr('value', c);
+	          	$('#fms_endc').attr('value', b.getFullYear() + "-" + (b.getMonth() + 1) + "-" + b.getDate());
+	          } else {
+	        	  //장애발생 일자 및 조치완료 일자가 잘못된 경우,
+	        	  $( '#fms_rec' ).val("");
+	        	  alert("장애 인지 일자가 조치 완료 일자에 대한 설정이 올바르지 않습니다.\n조치 완료 일자보다 이전인 날짜로 설정해 주십시오."); 
+	          }
+          }
+         });
+        
+        // 기타 옵션 선택 후, 작성시
+        $('#etc_val').on("input", function(event) {
+        	  //var text = event.target.value;
+        	var text = $("#etc_val").val();
+      	  	var a = $("#fms_rte").val();
+      	  	var b = $("#fms_rte option[value='"+a+"']").val(text);
+  			//alert("변경 : " +$("#fms_rte").val());
+        }); 
+        
+     	// 기타 옵션 선택 후, 작성시 (장애 시스템)
+        $('#sys_val').on("input", function(event) {
+        	var text = $("#sys_val").val();
+      	  	var a = $("#fms_sys").val();
+      	  	var b = $("#fms_sys option[value='"+a+"']").val(text);
+      	  	//alert($("#fms_sys").val());
+        }); 
 	});
+	
+	
+	
+	
 	</script>
 	
 	<textarea class="textarea"  class="textarea" id="workSet" name="workSet" style="display:none;" readonly><%= workSet %></textarea>
